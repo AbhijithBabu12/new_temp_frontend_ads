@@ -7,6 +7,38 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   const [abortController, setAbortController] = useState(null);
   const fileRef = useRef(null);
 
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const API = import.meta.env.VITE_API_URL;
+
+    try {
+      const res = await fetch(`${API}/upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      updateMessages(chat.id, [
+        ...chat.messages,
+        { role: "user", content: `Uploaded: ${file.name}` },
+        { role: "ai", content: data.message }
+      ]);
+    } catch (err) {
+      updateMessages(chat.id, [
+        ...chat.messages,
+        { role: "ai", content: "Upload failed" }
+      ]);
+    } finally {
+      e.target.value = "";
+    }
+  };
+
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
@@ -110,6 +142,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               ref={fileRef}
               className="hidden"
               accept=".csv"
+              onChange={handleFileUpload}
             />
 
             <textarea
