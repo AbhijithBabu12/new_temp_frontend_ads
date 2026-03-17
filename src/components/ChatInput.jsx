@@ -188,13 +188,13 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             </div>
           )}
 
-          <div className="flex items-end gap-2 px-2 py-2">
+          <div className="flex items-center gap-3 px-3 py-3">
             {mode === "data" && (
               <button
                 onClick={() => fileRef.current.click()}
-                className="mb-1 rounded-full p-2 text-gray-300 transition hover:bg-white/5 hover:text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-gray-300 transition hover:bg-white/5 hover:text-white"
               >
-                <Paperclip size={16} />
+                <Paperclip size={18} />
               </button>
             )}
 
@@ -212,14 +212,14 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className="h-[44px] max-h-28 flex-1 bg-transparent px-2 pt-[10px] text-[15px] font-normal leading-5 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#b0b0b8]"
+              className="h-[44px] max-h-28 flex-1 bg-transparent px-1 pt-[10px] text-[15px] font-normal leading-5 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#b0b0b8]"
               rows={1}
             />
 
             <button
               onClick={loading ? stopMessage : sendMessage}
               disabled={!loading && !input.trim() && !selectedFile}
-              className={`rounded-full p-2 transition ${
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
                 loading || input.trim() || selectedFile
                   ? "bg-white text-black hover:bg-[#e8e8e8]"
                   : "bg-[#3a3a3d] text-gray-400"
