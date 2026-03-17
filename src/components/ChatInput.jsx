@@ -80,7 +80,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       if (error.name === "AbortError") {
         updateMessages(chat.id, [
           ...updatedMessages.slice(0, -1),
-          { role: "ai", content: `${accumulated} ⏹️` }
+          { role: "ai", content: `${accumulated} [stopped]` }
         ]);
       } else {
         console.error(error);
@@ -101,65 +101,67 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   };
 
   return (
-    <div className="px-4 pb-6 flex justify-center">
-      <div className="w-full max-w-3xl">
-        <div className="relative bg-[#2f2f31] rounded-2xl border border-[#3d3d40] shadow-lg">
-          <input
-            type="file"
-            ref={fileRef}
-            className="hidden"
-            accept=".csv"
-          />
+    <div className="sticky bottom-0 z-10 px-6 pb-6 pt-3">
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="rounded-[2rem] border border-white/10 bg-[#2a2a2e]/95 shadow-[0_-12px_40px_rgba(0,0,0,0.32)] backdrop-blur">
+          <div className="relative">
+            <input
+              type="file"
+              ref={fileRef}
+              className="hidden"
+              accept=".csv"
+            />
 
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage();
+                }
+              }}
+              placeholder={
+                mode === "data"
+                  ? "Ask about your dataset..."
+                  : "Message your AI..."
               }
-            }}
-            placeholder={
-              mode === "data"
-                ? "Ask about your dataset..."
-                : "Message your AI..."
-            }
-            className="w-full bg-transparent text-white px-4 pt-4 pb-14 resize-none outline-none placeholder:text-gray-500"
-            rows={2}
-          />
+              className="min-h-[120px] w-full bg-transparent px-6 pt-5 pb-16 text-[15px] text-white resize-none outline-none placeholder:text-[#81818b]"
+              rows={3}
+            />
 
-          {mode === "data" && (
-            <div className="absolute bottom-3 left-3">
+            {mode === "data" && (
+              <div className="absolute bottom-3 left-3">
+                <button
+                  onClick={() => fileRef.current.click()}
+                  className="rounded-xl p-2 text-gray-400 transition hover:bg-white/10 hover:text-white"
+                >
+                  <Paperclip size={18} />
+                </button>
+              </div>
+            )}
+
+            <div className="absolute bottom-4 right-4">
               <button
-                onClick={() => fileRef.current.click()}
-                className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition"
+                onClick={loading ? stopMessage : sendMessage}
+                disabled={!loading && !input.trim()}
+                className={`rounded-full p-2 transition ${
+                  loading || input.trim()
+                    ? "bg-white text-black hover:bg-[#e8e8e8]"
+                    : "bg-[#3a3a40] text-gray-500"
+                }`}
               >
-                <Paperclip size={18} />
+                {loading ? (
+                  <Square size={16} className="fill-black" />
+                ) : (
+                  <ArrowUp size={16} className="stroke-[3]" />
+                )}
               </button>
             </div>
-          )}
-
-          <div className="absolute bottom-3 right-3">
-            <button
-              onClick={loading ? stopMessage : sendMessage}
-              disabled={!loading && !input.trim()}
-              className={`p-2 rounded-full transition ${
-                loading || input.trim()
-                  ? "bg-white text-black hover:bg-gray-200"
-                  : "bg-[#3d3d40] text-gray-500"
-              }`}
-            >
-              {loading ? (
-                <Square size={16} className="fill-black" />
-              ) : (
-                <ArrowUp size={16} className="stroke-[3]" />
-              )}
-            </button>
           </div>
         </div>
 
-        <div className="mt-2 text-center text-xs text-gray-500">
+        <div className="mt-3 text-center text-xs text-gray-500">
           Autonomous Data Scientist may produce inaccurate results.
         </div>
       </div>

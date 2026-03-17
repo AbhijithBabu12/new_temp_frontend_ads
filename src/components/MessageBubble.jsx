@@ -1,16 +1,20 @@
 export default function MessageBubble({ message }) {
+  const isUser = message.role === "user";
+
   return (
-    <div className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-      <div className={`px-4 py-3 rounded-2xl max-w-[80%] text-sm ${
-        message.role === "user"
-          ? "bg-[#2f2f31]"
-          : "bg-[#282828]"
-      }`}>
+    <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
+      <div
+        className={`max-w-[min(85%,48rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 shadow-sm ${
+          isUser
+            ? "rounded-[26px] rounded-tr-md border border-white/5 bg-[#303036] text-white"
+            : "rounded-[28px] rounded-tl-md border border-white/6 bg-[#262626] text-[#f3f4f6]"
+        }`}
+      >
         {message.content === "__loading__" ? (
-          <div className="flex gap-1">
-            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
-            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+          <div className="flex h-7 items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce"></span>
+            <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:0.15s]"></span>
+            <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:0.3s]"></span>
           </div>
         ) : (
           message.content

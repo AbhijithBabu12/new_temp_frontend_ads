@@ -6,6 +6,18 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
+  background: #212121;
+  color: #fff;
+  overflow: hidden;
+}
+
+html,
+#root {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 textarea::-webkit-scrollbar {
@@ -18,5 +30,19 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #4a4a4f;
+  border-radius: 999px;
+  border: 2px solid #212121;
+}
+
+*::-webkit-scrollbar-track {
   background: transparent;
 }

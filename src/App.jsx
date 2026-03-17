@@ -87,7 +87,7 @@ export default function App() {
   const currentChat = chats.find(c => c.id === currentChatId);
 
   return (
-    <div className="flex h-screen bg-[#212121] text-white relative">
+    <div className="flex h-screen overflow-hidden bg-[#212121] text-white relative">
 
       {/* ✅ SIDEBAR */}
       {sidebarOpen && (
