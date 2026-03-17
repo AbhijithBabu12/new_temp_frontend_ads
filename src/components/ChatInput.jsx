@@ -143,8 +143,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   return (
     <div className="px-6 pb-6 pt-2">
       <div className="mx-auto w-full max-w-3xl">
-        <div className="rounded-[1.75rem] border border-white/10 bg-[rgba(43,43,47,0.62)] shadow-[0_12px_36px_rgba(0,0,0,0.24)] backdrop-blur-md">
-          <div className="relative">
+        <div className="relative rounded-[1.75rem] border border-white/8 bg-[rgba(52,53,65,0.38)] backdrop-blur-sm">
             <input
               type="file"
               ref={fileRef}
@@ -155,7 +154,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
             {selectedFile && (
               <div className="px-4 pt-4">
-                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl bg-[rgba(63,63,71,0.9)] px-3 py-2 text-sm text-gray-200">
+                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl bg-[rgba(90,90,102,0.55)] px-3 py-2 text-sm text-gray-200">
                   <span className="max-w-[220px] truncate">{selectedFile.name}</span>
                   <button
                     type="button"
@@ -182,7 +181,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Message your AI..."
               }
-              className="min-h-[64px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#9a9aa3]"
+              className="min-h-[64px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#a1a1aa]"
               rows={1}
             />
 
@@ -190,7 +189,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               <div className="absolute bottom-3 left-3">
                 <button
                   onClick={() => fileRef.current.click()}
-                  className="rounded-xl p-2 text-gray-400 transition hover:bg-white/10 hover:text-white"
+                  className="rounded-xl p-2 text-gray-400 transition hover:bg-white/5 hover:text-white"
                 >
                   <Paperclip size={18} />
                 </button>
@@ -203,8 +202,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                 disabled={!loading && !input.trim() && !selectedFile}
                 className={`rounded-full p-2 transition ${
                   loading || input.trim() || selectedFile
-                    ? "bg-white text-black hover:bg-[#e8e8e8]"
-                    : "bg-[#3a3a40] text-gray-500"
+                    ? "bg-[rgba(255,255,255,0.88)] text-black hover:bg-white"
+                    : "bg-[rgba(76,76,86,0.55)] text-gray-400"
                 }`}
               >
                 {loading ? (
@@ -214,7 +213,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                 )}
               </button>
             </div>
-          </div>
         </div>
       </div>
     </div>
