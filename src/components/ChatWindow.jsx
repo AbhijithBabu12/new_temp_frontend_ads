@@ -29,7 +29,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 w-full flex justify-center">
+      <div className="flex-1 overflow-y-auto px-6 py-8 space-y-6 w-full flex justify-center scroll-smooth">
         <div className="w-full max-w-3xl space-y-6">
           {chat.messages.map((m, i) => (
             <MessageBubble key={i} message={m} />

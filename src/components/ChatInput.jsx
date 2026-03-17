@@ -12,9 +12,13 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
     const messageText = input;
     const userMessage = { role: "user", content: messageText };
-    const loadingMessage = { role: "ai", content: "Thinking..." };
+    const updatedMessages = [
+      ...chat.messages,
+      userMessage,
+      { role: "ai", content: "__loading__" }
+    ];
 
-    updateMessages(chat.id, [...chat.messages, userMessage, loadingMessage]);
+    updateMessages(chat.id, updatedMessages);
     setInput("");
     setLoading(true);
 
@@ -23,14 +27,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       const controller = new AbortController();
       const signal = controller.signal;
       setAbortController(controller);
-
-      const updatedMessages = [
-        ...chat.messages,
-        userMessage,
-        { role: "ai", content: "" }
-      ];
-
-      updateMessages(chat.id, updatedMessages);
 
       const res = await fetch(
         `${API}/message?mode=${mode}&message=${encodeURIComponent(messageText)}`,
@@ -58,6 +54,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       };
 
       while (!done) {
+        if (signal.aborted) break;
+
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
 
@@ -81,15 +79,13 @@ export default function ChatInput({ chat, updateMessages, mode }) {
     } catch (error) {
       if (error.name === "AbortError") {
         updateMessages(chat.id, [
-          ...chat.messages,
-          userMessage,
-          { role: "ai", content: "Generation stopped." }
+          ...updatedMessages.slice(0, -1),
+          { role: "ai", content: `${accumulated} ⏹️` }
         ]);
       } else {
         console.error(error);
         updateMessages(chat.id, [
-          ...chat.messages,
-          userMessage,
+          ...updatedMessages.slice(0, -1),
           { role: "ai", content: "Error connecting to backend" }
         ]);
       }
