@@ -134,8 +134,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
   return (
     <div className="sticky bottom-0 z-10 px-6 pb-6 pt-3">
-      <div className="mx-auto w-full max-w-4xl">
-        <div className="rounded-[2rem] border border-white/10 bg-[#2a2a2e]/95 shadow-[0_-12px_40px_rgba(0,0,0,0.32)] backdrop-blur">
+      <div className="mx-auto w-full max-w-3xl">
+        <div className="rounded-[1.75rem] border border-white/10 bg-[#2a2a2e]/95 shadow-[0_-12px_40px_rgba(0,0,0,0.32)] backdrop-blur">
           <div className="relative">
             <input
               type="file"
@@ -159,8 +159,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Message your AI..."
               }
-              className="min-h-[120px] w-full bg-transparent px-6 pt-5 pb-16 text-[15px] text-white resize-none outline-none placeholder:text-[#81818b]"
-              rows={3}
+              className="min-h-[64px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#81818b]"
+              rows={1}
             />
 
             {mode === "data" && (
@@ -174,7 +174,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               </div>
             )}
 
-            <div className="absolute bottom-4 right-4">
+            <div className="absolute bottom-3 right-3">
               <button
                 onClick={loading ? stopMessage : sendMessage}
                 disabled={!loading && !input.trim()}
