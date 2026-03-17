@@ -4,10 +4,10 @@ export default function MessageBubble({ message }) {
   return (
     <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[min(85%,48rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 shadow-sm ${
+        className={`max-w-[min(85%,48rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 ${
           isUser
-            ? "rounded-[26px] rounded-tr-md border border-white/5 bg-[#303036] text-white"
-            : "rounded-[28px] rounded-tl-md border border-white/6 bg-[#262626] text-[#f3f4f6]"
+            ? "rounded-[24px] rounded-br-md bg-[#303036] text-white"
+            : "rounded-[24px] rounded-bl-md bg-[#2a2a2d] text-[#ececf1]"
         }`}
       >
         {message.content === "__loading__" ? (

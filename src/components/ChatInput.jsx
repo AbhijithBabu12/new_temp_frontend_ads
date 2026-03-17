@@ -141,9 +141,9 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   };
 
   return (
-    <div className="sticky bottom-0 z-10 px-6 pb-6 pt-3">
+    <div className="sticky bottom-0 z-10 px-6 pb-6">
       <div className="mx-auto w-full max-w-3xl">
-        <div className="rounded-[1.75rem] border border-white/10 bg-[#2a2a2e]/95 shadow-[0_-12px_40px_rgba(0,0,0,0.32)] backdrop-blur">
+        <div className="rounded-[1.6rem] bg-[#2b2b2f] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
           <div className="relative">
             <input
               type="file"
@@ -155,7 +155,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
             {selectedFile && (
               <div className="px-4 pt-4">
-                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl border border-white/10 bg-[#34343a] px-3 py-2 text-sm text-gray-200">
+                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl bg-[#3a3a40] px-3 py-2 text-sm text-gray-200">
                   <span className="max-w-[220px] truncate">{selectedFile.name}</span>
                   <button
                     type="button"
@@ -182,20 +182,20 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Message your AI..."
               }
-              className="min-h-[64px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#81818b]"
+              className="min-h-[60px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#8d8d96]"
               rows={1}
             />
 
             {mode === "data" && (
               <div className="absolute bottom-3 left-3">
                 <button
-                  onClick={() => fileRef.current.click()}
-                  className="rounded-xl p-2 text-gray-400 transition hover:bg-white/10 hover:text-white"
-                >
-                  <Paperclip size={18} />
-                </button>
-              </div>
-            )}
+                onClick={() => fileRef.current.click()}
+                className="rounded-xl p-2 text-gray-400 transition hover:bg-white/5 hover:text-white"
+              >
+                <Paperclip size={18} />
+              </button>
+            </div>
+          )}
 
             <div className="absolute bottom-3 right-3">
               <button
@@ -203,7 +203,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                 disabled={!loading && !input.trim() && !selectedFile}
                 className={`rounded-full p-2 transition ${
                   loading || input.trim() || selectedFile
-                    ? "bg-white text-black hover:bg-[#e8e8e8]"
+                    ? "bg-[#f3f4f6] text-black hover:bg-white"
                     : "bg-[#3a3a40] text-gray-500"
                 }`}
               >
@@ -215,10 +215,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               </button>
             </div>
           </div>
-        </div>
-
-        <div className="mt-3 text-center text-xs text-gray-500">
-          Autonomous Data Scientist may produce inaccurate results.
         </div>
       </div>
     </div>
