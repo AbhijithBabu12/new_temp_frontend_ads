@@ -141,7 +141,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   };
 
   return (
-    <div className="sticky bottom-0 z-10 px-6 pb-6">
+    <div className="px-6 pb-6 pt-2">
       <div className="mx-auto w-full max-w-3xl">
         <div className="rounded-[1.6rem] bg-[#2b2b2f] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
           <div className="relative">
