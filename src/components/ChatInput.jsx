@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ArrowUp, Paperclip, Square } from "lucide-react";
+import { ArrowUp, Plus, Square } from "lucide-react";
 
 export default function ChatInput({ chat, updateMessages, mode }) {
   const [input, setInput] = useState("");
@@ -155,8 +155,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
   return (
     <div className="px-6 pb-6">
-      <div className="mx-auto w-full max-w-3xl">
-        <div className="relative rounded-[1.75rem] bg-[rgba(52,53,65,0.18)] backdrop-blur-sm">
+      <div className="mx-auto w-full max-w-[980px]">
+        <div className="relative rounded-[999px] border border-white/8 bg-[#303030]/95 backdrop-blur-sm">
             <input
               type="file"
               ref={fileRef}
@@ -166,8 +166,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             />
 
             {selectedFile && (
-              <div className="px-4 pt-4">
-                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl bg-[rgba(90,90,102,0.55)] px-3 py-2 text-sm text-gray-200">
+              <div className="px-5 pt-3">
+                <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-[#3d3d3f] px-3 py-1.5 text-sm text-gray-200">
                   <span className="max-w-[220px] truncate">{selectedFile.name}</span>
                   <button
                     type="button"
@@ -192,40 +192,39 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               placeholder={
                 mode === "data"
                   ? "Ask about your dataset..."
-                  : "Message your AI..."
+                  : "Ask anything"
               }
-              className="min-h-[64px] max-h-40 w-full bg-transparent px-5 pt-4 pb-14 text-[15px] text-white resize-none outline-none placeholder:text-[#a1a1aa]"
+              className="h-[68px] max-h-40 w-full bg-transparent px-16 pr-28 text-[16px] text-white resize-none overflow-hidden outline-none placeholder:text-[#b0b0b8]"
               rows={1}
             />
 
-            {mode === "data" && (
-              <div className="absolute bottom-3 left-3">
-                <button
-                  onClick={() => fileRef.current.click()}
-                  className="rounded-xl p-2 text-gray-400 transition hover:bg-white/5 hover:text-white"
-                >
-                  <Paperclip size={18} />
-                </button>
-              </div>
-            )}
+            <div className="absolute left-4 top-1/2 -translate-y-1/2">
+              <button
+                onClick={() => fileRef.current.click()}
+                className="rounded-full p-2.5 text-gray-300 transition hover:bg-white/5 hover:text-white"
+              >
+                <Plus size={20} />
+              </button>
+            </div>
 
-            <div className="absolute bottom-3 right-3">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
               <button
                 onClick={loading ? stopMessage : sendMessage}
                 disabled={!loading && !input.trim() && !selectedFile}
-                className={`rounded-full p-2 transition ${
+                className={`rounded-full p-3 transition ${
                   loading || input.trim() || selectedFile
-                    ? "bg-[rgba(255,255,255,0.88)] text-black hover:bg-white"
-                    : "bg-[rgba(76,76,86,0.55)] text-gray-400"
+                    ? "bg-[#4a4a4d] text-white hover:bg-[#58585d]"
+                    : "bg-[#3a3a3d] text-gray-400"
                 }`}
               >
                 {loading ? (
-                  <Square size={16} className="fill-black" />
+                  <Square size={16} className="fill-white" />
                 ) : (
                   <ArrowUp size={16} className="stroke-[3]" />
                 )}
               </button>
             </div>
+
         </div>
       </div>
     </div>
