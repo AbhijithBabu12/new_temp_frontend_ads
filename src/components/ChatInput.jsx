@@ -59,11 +59,26 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         }
 
         if (!messageText.trim()) {
+          const normalizedContent =
+            typeof uploadData.message === "object" && uploadData.message !== null
+              ? uploadData.message.message || "File uploaded successfully."
+              : uploadData.message || "File uploaded successfully.";
+
+          const normalizedFiles =
+            typeof uploadData.message === "object" && uploadData.message !== null
+              ? uploadData.message.files || uploadData.files || []
+              : uploadData.files || [];
+
+          const normalizedReport =
+            typeof uploadData.message === "object" && uploadData.message !== null
+              ? uploadData.message.report || uploadData.report || null
+              : uploadData.report || null;
+
           const aiMessage = {
             role: "ai",
-            content: uploadData.message || "File uploaded successfully.",
-            files: uploadData.files || [],
-            report: uploadData.report || null
+            content: normalizedContent,
+            files: normalizedFiles,
+            report: normalizedReport
           };
 
           updateMessages(chat.id, [...chat.messages, userMessage, aiMessage]);
