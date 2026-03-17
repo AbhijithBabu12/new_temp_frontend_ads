@@ -19,6 +19,22 @@ export default function MessageBubble({ message }) {
         ) : (
           message.content
         )}
+
+        {message.files && (
+          <div className="mt-3 flex flex-col gap-2">
+            {message.files.map((file, i) => (
+              <a
+                key={i}
+                href={`${import.meta.env.VITE_API_URL}/download/${file}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-blue-400 hover:underline"
+              >
+                Download {file}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

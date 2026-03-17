@@ -59,10 +59,23 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         }
 
         if (!messageText.trim()) {
-          updateMessages(chat.id, [
-            ...updatedMessages.slice(0, -1),
-            { role: "ai", content: uploadData.message || "File uploaded successfully." }
-          ]);
+          if (typeof uploadData.message === "object" && uploadData.message !== null) {
+            updateMessages(chat.id, [
+              ...chat.messages,
+              { role: "user", content: messageText },
+              {
+                role: "ai",
+                content: uploadData.message.message,
+                files: uploadData.message.files
+              }
+            ]);
+          } else {
+            updateMessages(chat.id, [
+              ...chat.messages,
+              { role: "user", content: messageText },
+              { role: "ai", content: uploadData.message || "File uploaded successfully." }
+            ]);
+          }
           setSelectedFile(null);
           return;
         }
