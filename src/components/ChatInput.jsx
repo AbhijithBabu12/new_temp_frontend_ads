@@ -5,45 +5,27 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [abortController, setAbortController] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const fileRef = useRef(null);
 
-  const handleFileUpload = async (e) => {
+  const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const API = import.meta.env.VITE_API_URL;
-
-    try {
-      const res = await fetch(`${API}/upload`, {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await res.json();
-
-      updateMessages(chat.id, [
-        ...chat.messages,
-        { role: "user", content: `Uploaded: ${file.name}` },
-        { role: "ai", content: data.message }
-      ]);
-    } catch (err) {
-      updateMessages(chat.id, [
-        ...chat.messages,
-        { role: "ai", content: "Upload failed" }
-      ]);
-    } finally {
-      e.target.value = "";
-    }
+    setSelectedFile(file);
+    e.target.value = "";
   };
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if ((!input.trim() && !selectedFile) || loading) return;
 
     const messageText = input;
-    const userMessage = { role: "user", content: messageText };
+    let accumulated = "";
+    const userContent = selectedFile
+      ? messageText.trim()
+        ? `${messageText}\n\nAttached: ${selectedFile.name}`
+        : `Attached: ${selectedFile.name}`
+      : messageText;
+    const userMessage = { role: "user", content: userContent };
     const updatedMessages = [
       ...chat.messages,
       userMessage,
@@ -60,6 +42,32 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       const signal = controller.signal;
       setAbortController(controller);
 
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const uploadRes = await fetch(`${API}/upload`, {
+          method: "POST",
+          body: formData,
+          signal
+        });
+
+        const uploadData = await uploadRes.json();
+
+        if (!uploadRes.ok) {
+          throw new Error(uploadData.message || "Upload failed");
+        }
+
+        if (!messageText.trim()) {
+          updateMessages(chat.id, [
+            ...updatedMessages.slice(0, -1),
+            { role: "ai", content: uploadData.message || "File uploaded successfully." }
+          ]);
+          setSelectedFile(null);
+          return;
+        }
+      }
+
       const res = await fetch(
         `${API}/message?mode=${mode}&message=${encodeURIComponent(messageText)}`,
         {
@@ -75,7 +83,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let done = false;
-      let accumulated = "";
       let flushTimeout = null;
 
       const flushMessages = () => {
@@ -108,6 +115,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       }
 
       flushMessages();
+      setSelectedFile(null);
     } catch (error) {
       if (error.name === "AbortError") {
         updateMessages(chat.id, [
@@ -118,7 +126,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         console.error(error);
         updateMessages(chat.id, [
           ...updatedMessages.slice(0, -1),
-          { role: "ai", content: "Error connecting to backend" }
+          { role: "ai", content: error.message || "Error connecting to backend" }
         ]);
       }
     } finally {
@@ -144,6 +152,21 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               accept=".csv"
               onChange={handleFileUpload}
             />
+
+            {selectedFile && (
+              <div className="px-4 pt-4">
+                <div className="inline-flex max-w-full items-center gap-2 rounded-2xl border border-white/10 bg-[#34343a] px-3 py-2 text-sm text-gray-200">
+                  <span className="max-w-[220px] truncate">{selectedFile.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedFile(null)}
+                    className="rounded-full px-1 text-gray-400 transition hover:text-white"
+                  >
+                    x
+                  </button>
+                </div>
+              </div>
+            )}
 
             <textarea
               value={input}
@@ -177,9 +200,9 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             <div className="absolute bottom-3 right-3">
               <button
                 onClick={loading ? stopMessage : sendMessage}
-                disabled={!loading && !input.trim()}
+                disabled={!loading && !input.trim() && !selectedFile}
                 className={`rounded-full p-2 transition ${
-                  loading || input.trim()
+                  loading || input.trim() || selectedFile
                     ? "bg-white text-black hover:bg-[#e8e8e8]"
                     : "bg-[#3a3a40] text-gray-500"
                 }`}
