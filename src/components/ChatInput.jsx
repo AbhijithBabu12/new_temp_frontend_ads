@@ -22,7 +22,10 @@ export default function ChatInput({ chat, updateMessages, mode }) {
       const API = import.meta.env.VITE_API_URL;
 
       const res = await fetch(
-        `${API}/message?mode=${mode}&message=${encodeURIComponent(input)}`
+        `${API}/message?mode=${mode}&message=${encodeURIComponent(input)}`,
+        {
+          method : 'POST'
+        }
       );
 
       const reader = res.body.getReader();
