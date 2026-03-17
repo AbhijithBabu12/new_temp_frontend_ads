@@ -155,8 +155,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
   return (
     <div className="px-6 pb-6">
-      <div className="mx-auto w-full max-w-[920px]">
-        <div className="relative rounded-[999px] bg-[#303030]/92 backdrop-blur-sm">
+      <div className="mx-auto w-full max-w-[860px]">
+        <div className="relative rounded-[999px] border border-white/10 bg-[#303030]/92 backdrop-blur-sm">
             <input
               type="file"
               ref={fileRef}
@@ -194,28 +194,28 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className={`h-[58px] max-h-32 w-full bg-transparent pr-20 pt-[17px] pb-3 text-[15px] leading-6 text-white resize-none overflow-hidden outline-none placeholder:text-[#b0b0b8] ${
-                mode === "data" ? "pl-14" : "pl-6"
+              className={`h-[52px] max-h-28 w-full bg-transparent pr-18 pt-[13px] pb-2 text-[15px] leading-6 text-white resize-none overflow-hidden outline-none placeholder:text-[#b0b0b8] ${
+                mode === "data" ? "pl-12" : "pl-5"
               }`}
               rows={1}
             />
 
             {mode === "data" && (
-              <div className="absolute left-3 top-1/2 -translate-y-1/2">
+              <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                 <button
                   onClick={() => fileRef.current.click()}
                   className="rounded-full p-2 text-gray-300 transition hover:bg-white/5 hover:text-white"
                 >
-                  <Paperclip size={18} />
+                  <Paperclip size={16} />
                 </button>
               </div>
             )}
 
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
               <button
                 onClick={loading ? stopMessage : sendMessage}
                 disabled={!loading && !input.trim() && !selectedFile}
-                className={`rounded-full p-3 transition ${
+                className={`rounded-full p-2.5 transition ${
                   loading || input.trim() || selectedFile
                     ? "bg-[#45454a] text-white hover:bg-[#505056]"
                     : "bg-[#3a3a3d] text-gray-400"
