@@ -1,38 +1,61 @@
-import { useState, useRef } from "react";
-import { ArrowUp, Square, Paperclip } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowUp, Paperclip, Square } from "lucide-react";
 
 export default function ChatInput({ chat, updateMessages, mode }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [abortController, setAbortController] = useState(null);
   const fileRef = useRef(null);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
 
-    const userMessage = { role: "user", content: input };
-    const aiMessage = { role: "ai", content: "" };
+    const messageText = input;
+    const userMessage = { role: "user", content: messageText };
+    const loadingMessage = { role: "ai", content: "Thinking..." };
 
-    const updatedMessages = [...chat.messages, userMessage, aiMessage];
-    updateMessages(chat.id, updatedMessages);
-
+    updateMessages(chat.id, [...chat.messages, userMessage, loadingMessage]);
     setInput("");
     setLoading(true);
 
     try {
       const API = import.meta.env.VITE_API_URL;
+      const controller = new AbortController();
+      const signal = controller.signal;
+      setAbortController(controller);
+
+      const updatedMessages = [
+        ...chat.messages,
+        userMessage,
+        { role: "ai", content: "" }
+      ];
+
+      updateMessages(chat.id, updatedMessages);
 
       const res = await fetch(
-        `${API}/message?mode=${mode}&message=${encodeURIComponent(input)}`,
+        `${API}/message?mode=${mode}&message=${encodeURIComponent(messageText)}`,
         {
-          method : 'POST'
+          method: "POST",
+          signal
         }
       );
 
+      if (!res.ok || !res.body) {
+        throw new Error("Failed to start stream");
+      }
+
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-
       let done = false;
       let accumulated = "";
+      let flushTimeout = null;
+
+      const flushMessages = () => {
+        updateMessages(chat.id, [
+          ...updatedMessages.slice(0, -1),
+          { role: "ai", content: accumulated }
+        ]);
+      };
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
@@ -41,35 +64,50 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         const chunk = decoder.decode(value || new Uint8Array());
         accumulated += chunk;
 
-        const newMessages = [
-          ...updatedMessages.slice(0, -1),
-          { role: "ai", content: accumulated }
-        ];
+        if (flushTimeout) {
+          clearTimeout(flushTimeout);
+        }
 
-        updateMessages(chat.id, newMessages);
+        flushTimeout = setTimeout(() => {
+          flushMessages();
+        }, 20);
       }
 
-    } catch (e) {
-      console.error(e);
+      if (flushTimeout) {
+        clearTimeout(flushTimeout);
+      }
 
-      const errorMessages = [
-        ...updatedMessages.slice(0, -1),
-        { role: "ai", content: "⚠️ Error connecting to backend" }
-      ];
-
-      updateMessages(chat.id, errorMessages);
+      flushMessages();
+    } catch (error) {
+      if (error.name === "AbortError") {
+        updateMessages(chat.id, [
+          ...chat.messages,
+          userMessage,
+          { role: "ai", content: "Generation stopped." }
+        ]);
+      } else {
+        console.error(error);
+        updateMessages(chat.id, [
+          ...chat.messages,
+          userMessage,
+          { role: "ai", content: "Error connecting to backend" }
+        ]);
+      }
+    } finally {
+      setAbortController(null);
+      setLoading(false);
     }
+  };
 
+  const stopMessage = () => {
+    abortController?.abort();
     setLoading(false);
   };
 
   return (
     <div className="px-4 pb-6 flex justify-center">
       <div className="w-full max-w-3xl">
-
         <div className="relative bg-[#2f2f31] rounded-2xl border border-[#3d3d40] shadow-lg">
-
-          {/* FILE INPUT */}
           <input
             type="file"
             ref={fileRef}
@@ -77,7 +115,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             accept=".csv"
           />
 
-          {/* TEXTAREA */}
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -96,7 +133,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             rows={2}
           />
 
-          {/* LEFT: Upload (only in Data mode) */}
           {mode === "data" && (
             <div className="absolute bottom-3 left-3">
               <button
@@ -108,13 +144,12 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             </div>
           )}
 
-          {/* RIGHT: Send */}
           <div className="absolute bottom-3 right-3">
             <button
-              onClick={sendMessage}
-              disabled={!input.trim()}
+              onClick={loading ? stopMessage : sendMessage}
+              disabled={!loading && !input.trim()}
               className={`p-2 rounded-full transition ${
-                input.trim()
+                loading || input.trim()
                   ? "bg-white text-black hover:bg-gray-200"
                   : "bg-[#3d3d40] text-gray-500"
               }`}
@@ -126,14 +161,11 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               )}
             </button>
           </div>
-
         </div>
 
-        {/* FOOTNOTE */}
         <div className="mt-2 text-center text-xs text-gray-500">
           Autonomous Data Scientist may produce inaccurate results.
         </div>
-
       </div>
     </div>
   );
