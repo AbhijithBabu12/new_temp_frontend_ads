@@ -185,7 +185,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className={`h-[52px] max-h-28 w-full bg-transparent pr-18 pt-[13px] pb-2 text-[15px] leading-6 text-white resize-none overflow-hidden outline-none placeholder:text-[#b0b0b8] ${
+              className={`h-[52px] max-h-28 w-full bg-transparent pr-18 pt-[14px] pb-2 text-[15px] font-normal leading-5 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#b0b0b8] ${
                 mode === "data" ? "pl-12" : "pl-5"
               }`}
               rows={1}
@@ -206,16 +206,16 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               <button
                 onClick={loading ? stopMessage : sendMessage}
                 disabled={!loading && !input.trim() && !selectedFile}
-                className={`rounded-full p-2.5 transition ${
+                className={`rounded-full p-2 transition ${
                   loading || input.trim() || selectedFile
-                    ? "bg-[#45454a] text-white hover:bg-[#505056]"
+                    ? "bg-white text-black hover:bg-[#e8e8e8]"
                     : "bg-[#3a3a3d] text-gray-400"
                 }`}
               >
                 {loading ? (
-                  <Square size={15} className="fill-white" />
+                  <Square size={16} className="fill-black" />
                 ) : (
-                  <ArrowUp size={15} className="stroke-[3]" />
+                  <ArrowUp size={16} className="stroke-[3]" />
                 )}
               </button>
             </div>
