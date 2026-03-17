@@ -143,7 +143,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   return (
     <div className="px-6 pb-6 pt-2">
       <div className="mx-auto w-full max-w-3xl">
-        <div className="relative rounded-[1.75rem] border border-white/8 bg-[rgba(52,53,65,0.38)] backdrop-blur-sm">
+        <div className="relative rounded-[1.75rem] bg-[rgba(52,53,65,0.24)] backdrop-blur-sm">
             <input
               type="file"
               ref={fileRef}
