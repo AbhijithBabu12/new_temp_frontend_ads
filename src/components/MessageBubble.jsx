@@ -20,7 +20,13 @@ export default function MessageBubble({ message }) {
           message.content
         )}
 
-        {message.files && (
+        {message.report && (
+          <pre className="mt-3 overflow-x-auto rounded-lg bg-black/30 p-3 text-xs">
+            {message.report}
+          </pre>
+        )}
+
+        {message.files && message.files.length > 0 && (
           <div className="mt-3 flex flex-col gap-2">
             {message.files.map((file, i) => (
               <a

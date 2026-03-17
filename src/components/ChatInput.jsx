@@ -59,23 +59,14 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         }
 
         if (!messageText.trim()) {
-          if (typeof uploadData.message === "object" && uploadData.message !== null) {
-            updateMessages(chat.id, [
-              ...chat.messages,
-              { role: "user", content: messageText },
-              {
-                role: "ai",
-                content: uploadData.message.message,
-                files: uploadData.message.files
-              }
-            ]);
-          } else {
-            updateMessages(chat.id, [
-              ...chat.messages,
-              { role: "user", content: messageText },
-              { role: "ai", content: uploadData.message || "File uploaded successfully." }
-            ]);
-          }
+          const aiMessage = {
+            role: "ai",
+            content: uploadData.message || "File uploaded successfully.",
+            files: uploadData.files || [],
+            report: uploadData.report || null
+          };
+
+          updateMessages(chat.id, [...chat.messages, userMessage, aiMessage]);
           setSelectedFile(null);
           return;
         }
