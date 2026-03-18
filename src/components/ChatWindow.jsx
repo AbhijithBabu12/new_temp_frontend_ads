@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChartNoAxesColumnIncreasing } from "lucide-react";
 import ModeToggle from "./ModeToggle";
 import ChatInput from "./ChatInput";
 import MessageBubble from "./MessageBubble";
@@ -64,6 +65,7 @@ function inferDataStep(chat) {
 export default function ChatWindow({ chat, updateMessages, switchMode }) {
   const endRef = useRef(null);
   const [landingAnimationKey, setLandingAnimationKey] = useState(0);
+  const [workflowOpen, setWorkflowOpen] = useState(false);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -81,39 +83,68 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
 
   return (
     <div key={chat.id} className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-transparent">
-      <div className="px-6 pt-5 pb-4 flex flex-col items-center gap-4">
-        <ModeToggle mode={chat.mode} switchMode={switchMode} />
+      <div className="relative px-6 pt-5 pb-4">
+        <div className="absolute left-1/2 top-5 -translate-x-1/2">
+          <ModeToggle mode={chat.mode} switchMode={switchMode} />
+        </div>
 
-        {chat.mode === "data" && (
-          <div className="flex w-full justify-end">
-            <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#706256]/12 bg-[linear-gradient(180deg,rgba(34,31,29,0.88),rgba(24,22,21,0.84))] px-2 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.16)] backdrop-blur-xl">
-              {DATA_STEPS.map((step, index) => {
-                const isActive = step.id === activeDataStep;
-                const isCompleted = DATA_STEPS.findIndex((item) => item.id === activeDataStep) > index;
+        <div className="flex min-h-[96px] items-start justify-end">
+          {chat.mode === "data" && (
+            <div className="mt-1 flex items-center gap-3">
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-out ${
+                  workflowOpen
+                    ? "max-w-[720px] translate-x-0 opacity-100"
+                    : "pointer-events-none max-w-0 translate-x-4 opacity-0"
+                }`}
+              >
+                <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#706256]/12 bg-[linear-gradient(180deg,rgba(34,31,29,0.88),rgba(24,22,21,0.84))] px-2 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.16)] backdrop-blur-xl">
+                  {DATA_STEPS.map((step, index) => {
+                    const isActive = step.id === activeDataStep;
+                    const isCompleted = DATA_STEPS.findIndex((item) => item.id === activeDataStep) > index;
 
-                return (
-                  <div
-                    key={step.id}
-                    className={`flex items-center gap-2 rounded-full px-3 py-1.5 transition-all ${
-                      isActive
-                        ? "bg-[linear-gradient(135deg,#f3ebe2,#d8c2a7)] text-[#1e1712] shadow-[0_14px_28px_rgba(73,52,34,0.16)]"
-                      : isCompleted
-                          ? "bg-white/[0.06] text-[#efe7de]"
-                          : "text-[#9d8f82]"
-                    }`}
-                  >
-                    <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                      isActive ? "bg-black/10" : isCompleted ? "bg-white/[0.08]" : "bg-white/[0.04]"
-                    }`}>
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-                    <div className="text-xs font-medium">{step.label}</div>
-                  </div>
-                );
-              })}
+                    return (
+                      <div
+                        key={step.id}
+                        className={`flex items-center gap-2 rounded-full px-3 py-1.5 transition-all ${
+                          isActive
+                            ? "bg-[linear-gradient(135deg,#f3ebe2,#d8c2a7)] text-[#1e1712] shadow-[0_14px_28px_rgba(73,52,34,0.16)]"
+                            : isCompleted
+                              ? "bg-white/[0.06] text-[#efe7de]"
+                              : "text-[#9d8f82]"
+                        }`}
+                      >
+                        <div
+                          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                            isActive ? "bg-black/10" : isCompleted ? "bg-white/[0.08]" : "bg-white/[0.04]"
+                          }`}
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="text-xs font-medium">{step.label}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setWorkflowOpen((value) => !value)}
+                className="inline-flex h-11 items-center gap-2 rounded-full border border-[#706256]/14 bg-[linear-gradient(180deg,rgba(34,31,29,0.92),rgba(24,22,21,0.88))] px-4 text-[#eadfd5] shadow-[0_16px_32px_rgba(0,0,0,0.16)] transition hover:bg-[linear-gradient(180deg,rgba(40,36,34,0.96),rgba(28,25,23,0.9))]"
+              >
+                <ChartNoAxesColumnIncreasing size={16} className="text-[#d4b89a]" />
+                <span className="text-xs font-semibold uppercase tracking-[0.16em]">
+                  Workflow
+                </span>
+                <ChevronLeft
+                  size={15}
+                  className={`transition-transform duration-300 ${workflowOpen ? "rotate-0" : "rotate-180"}`}
+                />
+              </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {chat.messages.length === 0 && (
