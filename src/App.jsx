@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Moon, SunMedium } from "lucide-react";
 import Sidebar from "./components/Sidebar";
 import ChatWindow from "./components/ChatWindow";
-import sidebarImage from "./assets/sidebar.jpeg";
+import sidebarImage from "./assets/new_side.jpeg";
 
 function createChat(mode) {
   const now = Date.now();
