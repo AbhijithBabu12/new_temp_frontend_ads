@@ -15,6 +15,30 @@ export default function ChatInput({ chat, updateMessages, mode }) {
     e.target.value = "";
   };
 
+  const buildAiMessage = (data, fallbackMessage = "Done.") => {
+    const normalizedContent =
+      typeof data.message === "object" && data.message !== null
+        ? data.message.message || fallbackMessage
+        : data.message || fallbackMessage;
+
+    const normalizedFiles =
+      typeof data.message === "object" && data.message !== null
+        ? data.message.files || data.files || []
+        : data.files || [];
+
+    const normalizedReport =
+      typeof data.message === "object" && data.message !== null
+        ? data.message.report || data.report || null
+        : data.report || null;
+
+    return {
+      role: "ai",
+      content: normalizedContent,
+      files: normalizedFiles,
+      report: normalizedReport
+    };
+  };
+
   const sendMessage = async () => {
     if ((!input.trim() && !selectedFile) || loading) return;
 
@@ -59,27 +83,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
         }
 
         if (!messageText.trim()) {
-          const normalizedContent =
-            typeof uploadData.message === "object" && uploadData.message !== null
-              ? uploadData.message.message || "File uploaded successfully."
-              : uploadData.message || "File uploaded successfully.";
-
-          const normalizedFiles =
-            typeof uploadData.message === "object" && uploadData.message !== null
-              ? uploadData.message.files || uploadData.files || []
-              : uploadData.files || [];
-
-          const normalizedReport =
-            typeof uploadData.message === "object" && uploadData.message !== null
-              ? uploadData.message.report || uploadData.report || null
-              : uploadData.report || null;
-
-          const aiMessage = {
-            role: "ai",
-            content: normalizedContent,
-            files: normalizedFiles,
-            report: normalizedReport
-          };
+          const aiMessage = buildAiMessage(uploadData, "File uploaded successfully.");
 
           updateMessages(chat.id, [...chat.messages, userMessage, aiMessage]);
           setSelectedFile(null);
@@ -97,6 +101,20 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
       if (!res.ok || !res.body) {
         throw new Error("Failed to start stream");
+      }
+
+      const contentType = res.headers.get("content-type") || "";
+
+      if (mode === "data" || contentType.includes("application/json")) {
+        const data = await res.json();
+        const aiMessage = buildAiMessage(data, "Done.");
+
+        updateMessages(chat.id, [
+          ...updatedMessages.slice(0, -1),
+          aiMessage
+        ]);
+        setSelectedFile(null);
+        return;
       }
 
       const reader = res.body.getReader();
