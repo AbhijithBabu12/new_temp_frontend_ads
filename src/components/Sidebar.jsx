@@ -2,14 +2,19 @@
 // Sidebar.jsx
 // =============================
 import { Plus, Trash2 } from "lucide-react";
+import logoImage from "../assets/logo1.png";
 
 export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat }) {
   return (
     <div className="w-64 bg-[#171717] border-r border-white/5 p-4 flex flex-col">
 
-      <div className="flex items-center gap-2 mb-6">
-        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">L</div>
-        <span className="font-semibold">My Logo</span>
+      <div className="mb-6 flex items-center gap-3">
+        <img
+          src={logoImage}
+          alt="Mclovin logo"
+          className="h-10 w-10 rounded-full object-cover"
+        />
+        <span className="text-lg font-semibold">Mclovin</span>
       </div>
 
       <button

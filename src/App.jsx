@@ -98,7 +98,7 @@ export default function App() {
           fixed top-4 z-50
           h-11 w-11 overflow-hidden rounded-full
           shadow-lg transition-all duration-300
-          ${sidebarOpen ? "left-64" : "left-4"}
+          ${sidebarOpen ? "left-72" : "left-4"}
         `}
       >
         <img
