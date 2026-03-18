@@ -26,7 +26,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
       </div>
 
       {chat.messages.length === 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center -mt-20">
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center -mt-20">
           <div
             key={landingAnimationKey}
             className="landing-logo-scene relative flex flex-col items-center"
@@ -37,7 +37,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
             <button
               type="button"
               onClick={() => setLandingAnimationKey((value) => value + 1)}
-              className="landing-logo-button mb-6"
+              className="landing-logo-button pointer-events-auto mb-6"
               aria-label="Replay logo animation"
             >
               <img
