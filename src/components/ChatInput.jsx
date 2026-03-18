@@ -39,6 +39,90 @@ export default function ChatInput({ chat, updateMessages, mode }) {
     };
   };
 
+  const streamDataMessage = async (res, updatedMessages, chatId, signal) => {
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+    let buffer = "";
+    let accumulated = "";
+    let flushTimeout = null;
+    let finalFiles = [];
+    let finalReport = null;
+
+    const flushMessages = () => {
+      updateMessages(chatId, [
+        ...updatedMessages.slice(0, -1),
+        {
+          role: "ai",
+          content: accumulated || "__loading__",
+          files: finalFiles,
+          report: finalReport
+        }
+      ]);
+    };
+
+    while (!done) {
+      if (signal.aborted) break;
+
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      buffer += decoder.decode(value || new Uint8Array(), { stream: !doneReading });
+
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const payload = JSON.parse(trimmed);
+
+        if (payload.type === "content") {
+          accumulated += payload.chunk || "";
+        }
+
+        if (payload.type === "final") {
+          finalFiles = payload.files || [];
+          finalReport = payload.report || null;
+          if (!accumulated && payload.message) {
+            accumulated = payload.message;
+          }
+        }
+
+        if (flushTimeout) {
+          clearTimeout(flushTimeout);
+        }
+
+        flushTimeout = setTimeout(() => {
+          flushMessages();
+        }, 20);
+      }
+    }
+
+    if (buffer.trim()) {
+      const payload = JSON.parse(buffer.trim());
+      if (payload.type === "final") {
+        finalFiles = payload.files || [];
+        finalReport = payload.report || null;
+        if (!accumulated && payload.message) {
+          accumulated = payload.message;
+        }
+      }
+    }
+
+    if (flushTimeout) {
+      clearTimeout(flushTimeout);
+    }
+
+    flushMessages();
+
+    return {
+      content: accumulated,
+      files: finalFiles,
+      report: finalReport
+    };
+  };
+
   const sendMessage = async () => {
     if ((!input.trim() && !selectedFile) || loading) return;
 
@@ -105,7 +189,13 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
       const contentType = res.headers.get("content-type") || "";
 
-      if (mode === "data" || contentType.includes("application/json")) {
+      if (contentType.includes("application/x-ndjson")) {
+        await streamDataMessage(res, updatedMessages, chat.id, signal);
+        setSelectedFile(null);
+        return;
+      }
+
+      if (contentType.includes("application/json")) {
         const data = await res.json();
         const aiMessage = buildAiMessage(data, "Done.");
 
