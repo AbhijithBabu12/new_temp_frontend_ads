@@ -1,5 +1,9 @@
 export default function MessageBubble({ message }) {
   const isUser = message.role === "user";
+  const imageFiles = (message.files || []).filter((file) =>
+    /\.(png|jpg|jpeg|gif|webp)$/i.test(file)
+  );
+  const downloadFiles = (message.files || []).filter((file) => !imageFiles.includes(file));
 
   return (
     <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
@@ -26,9 +30,28 @@ export default function MessageBubble({ message }) {
           </pre>
         )}
 
+        {imageFiles.length > 0 && (
+          <div className="mt-3 flex flex-col gap-3">
+            {imageFiles.map((file, i) => (
+              <a
+                key={i}
+                href={`${import.meta.env.VITE_API_URL}/download/${file}`}
+                download={file}
+                className="block overflow-hidden rounded-xl border border-white/10 bg-black/20"
+              >
+                <img
+                  src={`${import.meta.env.VITE_API_URL}/download/${file}`}
+                  alt={file}
+                  className="h-auto w-full object-contain"
+                />
+              </a>
+            ))}
+          </div>
+        )}
+
         {message.files && message.files.length > 0 && (
           <div className="mt-3 flex flex-col gap-2">
-            {message.files.map((file, i) => (
+            {downloadFiles.map((file, i) => (
               <a
                 key={i}
                 href={`${import.meta.env.VITE_API_URL}/download/${file}`}
