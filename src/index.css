@@ -5,10 +5,13 @@
 /* Optional: smooth fonts */
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #212121;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #161618;
   color: #fff;
   overflow: hidden;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html,
@@ -38,13 +41,18 @@ textarea::-webkit-scrollbar-track {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #4a4a4f;
+  background: #565a66;
   border-radius: 999px;
-  border: 2px solid #212121;
+  border: 2px solid #161618;
 }
 
 *::-webkit-scrollbar-track {
   background: transparent;
+}
+
+::selection {
+  background: rgba(125, 167, 255, 0.32);
+  color: #ffffff;
 }
 
 .landing-logo-scene {

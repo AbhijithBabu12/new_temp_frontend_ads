@@ -179,8 +179,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
   return (
     <div className="px-6 pb-6">
-      <div className="mx-auto w-full max-w-[860px]">
-        <div className={`border border-white/10 bg-[#303030]/92 backdrop-blur-sm ${
+      <div className="mx-auto w-full max-w-[900px]">
+        <div className={`border border-white/12 bg-[linear-gradient(180deg,rgba(35,35,39,0.92),rgba(28,28,32,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl ${
           selectedFile ? "rounded-[28px]" : "rounded-[999px]"
         }`}>
           <input
@@ -192,8 +192,8 @@ export default function ChatInput({ chat, updateMessages, mode }) {
           />
 
           {selectedFile && (
-            <div className="px-4 pt-3">
-              <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-[#3d3d3f] px-3 py-1.5 text-sm text-gray-200">
+            <div className="px-4 pt-4">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-sm text-gray-200 shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
                 <span className="max-w-[220px] truncate">{selectedFile.name}</span>
                 <button
                   type="button"
@@ -210,7 +210,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             {mode === "data" && (
               <button
                 onClick={() => fileRef.current.click()}
-                className="flex h-10 w-10 items-center justify-center rounded-full text-gray-300 transition hover:bg-white/5 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/8 bg-white/[0.04] text-gray-300 transition hover:bg-white/8 hover:text-white"
               >
                 <Paperclip size={18} />
               </button>
@@ -230,17 +230,17 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className="h-[44px] max-h-28 flex-1 bg-transparent px-1 pt-[10px] text-[15px] font-normal leading-5 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#b0b0b8]"
+              className="h-[46px] max-h-28 flex-1 bg-transparent px-1 pt-[11px] text-[15px] font-normal leading-6 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#aeb4c4]"
               rows={1}
             />
 
             <button
               onClick={loading ? stopMessage : sendMessage}
               disabled={!loading && !input.trim() && !selectedFile}
-              className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
+              className={`flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition ${
                 loading || input.trim() || selectedFile
-                  ? "bg-white text-black hover:bg-[#e8e8e8]"
-                  : "bg-[#3a3a3d] text-gray-400"
+                  ? "bg-[linear-gradient(135deg,#ffffff,#dbe4ff)] text-black hover:brightness-105"
+                  : "border border-white/8 bg-white/[0.06] text-gray-400"
               }`}
             >
               {loading ? (

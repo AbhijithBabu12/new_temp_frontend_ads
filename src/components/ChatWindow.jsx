@@ -20,8 +20,8 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
   if (!chat) return null;
 
   return (
-    <div key={chat.id} className="flex-1 min-w-0 min-h-0 flex flex-col relative overflow-hidden bg-[#212121]">
-      <div className="px-6 pt-4 pb-3 flex justify-center">
+    <div key={chat.id} className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-transparent">
+      <div className="px-6 pt-5 pb-4 flex justify-center">
         <ModeToggle mode={chat.mode} switchMode={switchMode} />
       </div>
 
@@ -47,15 +47,18 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
               />
             </button>
 
-            <h1 className="text-3xl font-semibold tracking-tight text-white [text-shadow:0_10px_40px_rgba(0,0,0,0.38)]">
+            <h1 className="text-4xl font-semibold tracking-[-0.03em] text-white [text-shadow:0_18px_55px_rgba(0,0,0,0.36)]">
               How can I help you?
             </h1>
+            <p className="mt-3 max-w-xl text-center text-[15px] leading-7 text-[#9da3b5]">
+              Ask anything in chat mode, or switch into data science mode for guided dataset analysis and model evaluation.
+            </p>
           </div>
         </div>
       )}
 
       <div className="flex-1 min-h-0 overflow-y-auto scroll-smooth">
-        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 pt-6 pb-40">
+        <div className="mx-auto flex w-full max-w-[72rem] flex-col gap-7 px-6 pt-4 pb-44">
           {chat.messages.map((m, i) => (
             <MessageBubble key={i} message={m} />
           ))}
@@ -64,7 +67,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#212121] via-[#212121]/85 to-transparent pt-14">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#161618] via-[#161618]/88 to-transparent pt-16">
         <div className="pointer-events-auto">
           <ChatInput
             chat={chat}
