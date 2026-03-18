@@ -1,14 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ModeToggle from "./ModeToggle";
 import ChatInput from "./ChatInput";
 import MessageBubble from "./MessageBubble";
 
 export default function ChatWindow({ chat, updateMessages, switchMode }) {
   const endRef = useRef(null);
+  const [landingAnimationKey, setLandingAnimationKey] = useState(0);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat?.messages]);
+
+  useEffect(() => {
+    if (chat?.messages?.length === 0) {
+      setLandingAnimationKey((value) => value + 1);
+    }
+  }, [chat?.id, chat?.messages?.length]);
 
   if (!chat) return null;
 
@@ -19,15 +26,31 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
       </div>
 
       {chat.messages.length === 0 && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center -mt-20 pointer-events-none">
-          <img
-            src="/sent.png"
-            className="w-14 h-14 mb-4 opacity-90 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-          />
+        <div className="absolute inset-0 flex flex-col items-center justify-center -mt-20">
+          <div
+            key={landingAnimationKey}
+            className="landing-logo-scene relative flex flex-col items-center"
+          >
+            <div className="landing-logo-beam"></div>
+            <div className="landing-logo-aura"></div>
 
-          <h1 className="text-3xl font-semibold text-white">
-            How can I help you?
-          </h1>
+            <button
+              type="button"
+              onClick={() => setLandingAnimationKey((value) => value + 1)}
+              className="landing-logo-button mb-6"
+              aria-label="Replay logo animation"
+            >
+              <img
+                src="/sent.png"
+                alt="Landing logo"
+                className="landing-logo-image"
+              />
+            </button>
+
+            <h1 className="text-3xl font-semibold tracking-tight text-white [text-shadow:0_10px_40px_rgba(0,0,0,0.38)]">
+              How can I help you?
+            </h1>
+          </div>
         </div>
       )}
 
