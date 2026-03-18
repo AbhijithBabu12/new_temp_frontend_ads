@@ -32,7 +32,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
       )}
 
       <div className="flex-1 min-h-0 overflow-y-auto scroll-smooth">
-        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 pt-6 pb-28">
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 pt-6 pb-40">
           {chat.messages.map((m, i) => (
             <MessageBubble key={i} message={m} />
           ))}
@@ -41,7 +41,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#212121] via-[#212121]/85 to-transparent pt-10">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#212121] via-[#212121]/85 to-transparent pt-14">
         <div className="pointer-events-auto">
           <ChatInput
             chat={chat}
