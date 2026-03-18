@@ -103,7 +103,7 @@ export default function App() {
           h-12 w-12 overflow-hidden rounded-full border border-white/12
           shadow-[0_18px_50px_rgba(0,0,0,0.28)] transition-all duration-300
           backdrop-blur-xl
-          ${sidebarOpen ? "left-72" : "left-4"}
+          ${sidebarOpen ? "left-80" : "left-4"}
         `}
       >
         <img

@@ -6,7 +6,7 @@ import logoImage from "../assets/mc_logo.jpeg";
 
 export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, currentChatId }) {
   return (
-    <aside className="relative z-20 flex w-[18rem] shrink-0 flex-col border-r border-white/8 bg-[linear-gradient(180deg,rgba(20,20,23,0.98)_0%,rgba(17,17,20,0.96)_100%)] px-4 py-5 shadow-[18px_0_60px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
+    <aside className="relative z-20 flex w-[18rem] shrink-0 flex-col bg-[linear-gradient(180deg,rgba(20,20,23,0.98)_0%,rgba(17,17,20,0.96)_100%)] px-4 py-5 shadow-[18px_0_60px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent_32%)]"></div>
 
       <div className="relative mb-8 flex items-center gap-3">
@@ -15,10 +15,7 @@ export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, 
           alt="Mclovin logo"
           className="h-11 w-11 rounded-full object-cover ring-1 ring-white/10"
         />
-        <div>
-          <div className="text-lg font-semibold tracking-[0.01em] text-white">Mclovin</div>
-          <div className="text-xs uppercase tracking-[0.22em] text-[#7f8596]">AI Workspace</div>
-        </div>
+        <div className="text-lg font-semibold tracking-[0.01em] text-white">Mclovin</div>
       </div>
 
       <button

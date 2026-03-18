@@ -180,7 +180,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   return (
     <div className="px-6 pb-6">
       <div className="mx-auto w-full max-w-[900px]">
-        <div className={`border border-white/12 bg-[linear-gradient(180deg,rgba(35,35,39,0.92),rgba(28,28,32,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl ${
+        <div className={`bg-[linear-gradient(180deg,rgba(35,35,39,0.92),rgba(28,28,32,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl ${
           selectedFile ? "rounded-[28px]" : "rounded-[999px]"
         }`}>
           <input
@@ -210,7 +210,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             {mode === "data" && (
               <button
                 onClick={() => fileRef.current.click()}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/8 bg-white/[0.04] text-gray-300 transition hover:bg-white/8 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.04] text-gray-300 transition hover:bg-white/8 hover:text-white"
               >
                 <Paperclip size={18} />
               </button>
@@ -240,7 +240,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
               className={`flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition ${
                 loading || input.trim() || selectedFile
                   ? "bg-[linear-gradient(135deg,#ffffff,#dbe4ff)] text-black hover:brightness-105"
-                  : "border border-white/8 bg-white/[0.06] text-gray-400"
+                  : "bg-white/[0.06] text-gray-400"
               }`}
             >
               {loading ? (
