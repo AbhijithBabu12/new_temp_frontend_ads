@@ -32,8 +32,7 @@ export default function MessageBubble({ message }) {
               <a
                 key={i}
                 href={`${import.meta.env.VITE_API_URL}/download/${file}`}
-                target="_blank"
-                rel="noreferrer"
+                download={file}
                 className="text-xs text-blue-400 hover:underline"
               >
                 Download {file}
