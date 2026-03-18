@@ -86,22 +86,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
 
         {chat.mode === "data" && (
           <div className="flex w-full justify-end">
-            <div className="w-full max-w-[360px] rounded-[26px] border border-[#706256]/12 bg-[linear-gradient(180deg,rgba(34,31,29,0.92),rgba(24,22,21,0.9))] p-3 shadow-[0_18px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-              <div className="mb-3 flex items-center justify-between">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#bda792]">
-                    Workflow
-                  </div>
-                  <div className="mt-1 text-sm font-medium text-[#eee6de]">
-                    Data Science Progress
-                  </div>
-                </div>
-                <div className="rounded-full bg-white/[0.05] px-3 py-1 text-[11px] text-[#cdb9a6]">
-                  Step {DATA_STEPS.findIndex((item) => item.id === activeDataStep) + 1}/5
-                </div>
-              </div>
-
-              <div className="space-y-2">
+            <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#706256]/12 bg-[linear-gradient(180deg,rgba(34,31,29,0.88),rgba(24,22,21,0.84))] px-2 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.16)] backdrop-blur-xl">
               {DATA_STEPS.map((step, index) => {
                 const isActive = step.id === activeDataStep;
                 const isCompleted = DATA_STEPS.findIndex((item) => item.id === activeDataStep) > index;
@@ -109,29 +94,23 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
                 return (
                   <div
                     key={step.id}
-                    className={`flex items-center gap-3 rounded-[18px] px-3 py-2.5 transition-all ${
+                    className={`flex items-center gap-2 rounded-full px-3 py-1.5 transition-all ${
                       isActive
                         ? "bg-[linear-gradient(135deg,#f3ebe2,#d8c2a7)] text-[#1e1712] shadow-[0_14px_28px_rgba(73,52,34,0.16)]"
-                        : isCompleted
+                      : isCompleted
                           ? "bg-white/[0.06] text-[#efe7de]"
                           : "text-[#9d8f82]"
                     }`}
                   >
-                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold uppercase tracking-[0.18em] ${
+                    <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-[0.16em] ${
                       isActive ? "bg-black/10" : isCompleted ? "bg-white/[0.08]" : "bg-white/[0.04]"
                     }`}>
                       {String(index + 1).padStart(2, "0")}
                     </div>
-                    <div className="min-w-0">
-                      <div className="text-sm font-semibold">{step.label}</div>
-                      <div className={`mt-0.5 text-[11px] ${isActive ? "text-black/60" : "text-[#8f8174]"}`}>
-                        {step.hint}
-                      </div>
-                    </div>
+                    <div className="text-xs font-medium">{step.label}</div>
                   </div>
                 );
               })}
-              </div>
             </div>
           </div>
         )}
