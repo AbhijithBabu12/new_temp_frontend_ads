@@ -19,8 +19,8 @@ export default function MessageBubble({ message }) {
       <div
         className={`max-w-[min(85%,48rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 ${
           isUser
-            ? "rounded-[24px] rounded-br-md bg-[#303036] text-white"
-            : "rounded-[24px] rounded-bl-md bg-[#2a2a2d] text-[#ececf1]"
+            ? "rounded-[24px] rounded-br-md bg-[#30352f] text-white"
+            : "rounded-[24px] rounded-bl-md bg-[#242825] text-[#ecefe9]"
         }`}
       >
         {message.content === "__loading__" ? (
@@ -34,7 +34,7 @@ export default function MessageBubble({ message }) {
         )}
 
         {message.report && (
-          <pre className="mt-3 overflow-x-auto rounded-lg bg-black/30 p-3 text-xs">
+          <pre className="mt-3 overflow-x-auto rounded-lg bg-black/30 p-3 text-xs text-[#d7ddd5]">
             {message.report}
           </pre>
         )}
@@ -65,7 +65,7 @@ export default function MessageBubble({ message }) {
                 key={i}
                 href={`${import.meta.env.VITE_API_URL}/download/${file}`}
                 download={file}
-                className="text-xs text-blue-400 hover:underline"
+                className="text-xs text-emerald-300 hover:underline"
               >
                 Download {file}
               </a>

@@ -82,9 +82,9 @@ export default function App() {
   const currentChat = chats.find((c) => c.id === currentChatId);
 
   return (
-    <div className="app-shell relative flex h-screen overflow-hidden bg-[#161618] text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(73,115,255,0.14),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.12),transparent_22%),linear-gradient(180deg,#1a1a1d_0%,#131316_100%)]"></div>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-[26rem] bg-[radial-gradient(circle_at_left,rgba(255,255,255,0.04),transparent_58%)]"></div>
+    <div className="app-shell relative flex h-screen overflow-hidden bg-[#151816] text-white">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(52,211,153,0.12),transparent_22%),linear-gradient(180deg,#171b18_0%,#101311_100%)]"></div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[26rem] bg-[radial-gradient(circle_at_left,rgba(255,255,255,0.03),transparent_58%)]"></div>
 
       {sidebarOpen && (
         <Sidebar
