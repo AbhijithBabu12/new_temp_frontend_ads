@@ -89,6 +89,7 @@ export default function App() {
           newChat={newChat}
           setCurrentChatId={setCurrentChatId}
           deleteChat={deleteChat}
+          currentChatId={currentChatId}
         />
       )}
 

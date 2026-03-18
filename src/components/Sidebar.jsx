@@ -4,7 +4,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import logoImage from "../assets/logo1.png";
 
-export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat }) {
+export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, currentChatId }) {
   return (
     <div className="w-64 bg-[#171717] border-r border-white/5 p-4 flex flex-col">
 
@@ -27,21 +27,26 @@ export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat }
 
       <div className="mt-6 text-sm text-gray-400">Recent Chats</div>
 
-      <div className="mt-2 space-y-2">
+      <div className="mt-2 flex-1 space-y-2 overflow-y-auto">
         {chats.map(chat => (
           <div
             key={chat.id}
-            className="flex items-center justify-between p-2 rounded-lg hover:bg-[#2a2a2a] group"
+            className={`group flex items-center justify-between rounded-lg p-2 transition ${
+              currentChatId === chat.id ? "bg-[#2f2f31]" : "hover:bg-[#2a2a2a]"
+            }`}
           >
             <div
               onClick={() => setCurrentChatId(chat.id)}
-              className="cursor-pointer text-sm truncate"
+              className="min-w-0 flex-1 cursor-pointer text-sm truncate"
             >
               {chat.title}
             </div>
 
             <button
-              onClick={() => deleteChat(chat.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteChat(chat.id);
+              }}
               className="opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-red-400"
             >
               <Trash2 size={14}/>
