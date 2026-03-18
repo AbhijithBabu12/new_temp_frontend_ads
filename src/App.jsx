@@ -3,6 +3,18 @@ import Sidebar from "./components/Sidebar";
 import ChatWindow from "./components/ChatWindow";
 import sidebarImage from "./assets/sidebar.jpeg";
 
+function createChat(mode) {
+  const now = Date.now();
+  return {
+    id: now.toString(),
+    title: mode === "chat" ? "Chat" : "Data Analysis",
+    messages: [],
+    mode,
+    createdAt: now,
+    updatedAt: now
+  };
+}
+
 export default function App() {
   const [chats, setChats] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(null);
@@ -10,35 +22,20 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const firstChat = {
-      id: Date.now().toString(),
-      title: "Chat",
-      messages: [],
-      mode: "chat"
-    };
+    const firstChat = createChat("chat");
     setChats([firstChat]);
     setCurrentChatId(firstChat.id);
   }, []);
 
   const newChat = () => {
-    const chat = {
-      id: Date.now().toString(),
-      title: mode === "chat" ? "Chat" : "Data Analysis",
-      messages: [],
-      mode
-    };
+    const chat = createChat(mode);
 
     setChats((prev) => [chat, ...prev]);
     setCurrentChatId(chat.id);
   };
 
   const switchMode = (newMode) => {
-    const chat = {
-      id: Date.now().toString(),
-      title: newMode === "chat" ? "Chat" : "Data Analysis",
-      messages: [],
-      mode: newMode
-    };
+    const chat = createChat(newMode);
 
     setMode(newMode);
     setChats((prev) => [chat, ...prev]);
@@ -49,17 +46,14 @@ export default function App() {
     const filtered = chats.filter((c) => c.id !== chatId);
 
     if (filtered.length === 0) {
-      const newChatObj = {
-        id: Date.now().toString(),
-        title: "Chat",
-        messages: [],
-        mode: "chat"
-      };
+      const newChatObj = createChat("chat");
       setChats([newChatObj]);
       setCurrentChatId(newChatObj.id);
+      setMode("chat");
     } else {
       setChats(filtered);
       setCurrentChatId(filtered[0].id);
+      setMode(filtered[0].mode);
     }
   };
 
@@ -70,16 +64,25 @@ export default function App() {
 
         let title = c.title;
 
-        if (messages.length > 0 && c.title === "Chat") {
+        if (
+          messages.length > 0 &&
+          (c.title === "Chat" || c.title === "Data Analysis")
+        ) {
           title = messages[0].content.slice(0, 25);
         }
 
-        return { ...c, messages, title };
+        return { ...c, messages, title, updatedAt: Date.now() };
       })
     );
   };
 
   const currentChat = chats.find((c) => c.id === currentChatId);
+
+  useEffect(() => {
+    if (currentChat?.mode) {
+      setMode(currentChat.mode);
+    }
+  }, [currentChat?.id, currentChat?.mode]);
 
   return (
     <div className="app-shell relative flex h-screen overflow-hidden bg-[#171514] text-white">

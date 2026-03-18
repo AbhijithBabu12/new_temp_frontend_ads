@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { ArrowUp, Paperclip, Square } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUp, LoaderCircle, Paperclip, Square, Sparkles, X } from "lucide-react";
 
 export default function ChatInput({ chat, updateMessages, mode }) {
   const [input, setInput] = useState("");
@@ -7,6 +7,15 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   const [abortController, setAbortController] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const fileRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = "0px";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+  }, [input, selectedFile]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -177,10 +186,12 @@ export default function ChatInput({ chat, updateMessages, mode }) {
     setLoading(false);
   };
 
+  const canSend = Boolean(input.trim() || selectedFile);
+
   return (
     <div className="px-6 pb-6">
       <div className="mx-auto w-full max-w-[900px]">
-        <div className={`bg-[linear-gradient(180deg,rgba(36,32,30,0.92),rgba(26,24,23,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl ${
+        <div className={`border border-[#6f6257]/10 bg-[linear-gradient(180deg,rgba(36,32,30,0.92),rgba(26,24,23,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-200 ${
           selectedFile ? "rounded-[28px]" : "rounded-[999px]"
         }`}>
           <input
@@ -193,14 +204,18 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
           {selectedFile && (
             <div className="px-4 pt-4">
-              <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1.5 text-sm text-[#e6ddd5] shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
-                <span className="max-w-[220px] truncate">{selectedFile.name}</span>
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#7a695a]/18 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-3 py-2 text-sm text-[#e6ddd5] shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#d7bda4]/18 text-[#dcc0a3]">
+                  <Paperclip size={13} />
+                </span>
+                <span className="max-w-[220px] truncate font-medium">{selectedFile.name}</span>
+                <span className="text-[11px] uppercase tracking-[0.16em] text-[#ac9c8f]">CSV</span>
                 <button
                   type="button"
                   onClick={() => setSelectedFile(null)}
-                  className="rounded-full px-1 text-gray-400 transition hover:text-white"
+                  className="rounded-full p-1 text-gray-400 transition hover:bg-white/[0.06] hover:text-white"
                 >
-                  x
+                  <X size={13} />
                 </button>
               </div>
             </div>
@@ -217,6 +232,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             )}
 
             <textarea
+              ref={textareaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -230,26 +246,41 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className="h-[46px] max-h-28 flex-1 bg-transparent px-1 pt-[11px] text-[15px] font-normal leading-6 text-white resize-none overflow-hidden outline-none placeholder:font-normal placeholder:text-[#aa9f95]"
+              className="min-h-[46px] max-h-40 flex-1 bg-transparent px-1 pt-[11px] text-[15px] font-normal leading-6 text-white resize-none overflow-y-auto outline-none placeholder:font-normal placeholder:text-[#aa9f95]"
               rows={1}
             />
 
             <button
               onClick={loading ? stopMessage : sendMessage}
-              disabled={!loading && !input.trim() && !selectedFile}
-              className={`flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition ${
-                loading || input.trim() || selectedFile
-                  ? "bg-[linear-gradient(135deg,#f5ede5,#d2b497)] text-[#241a13] hover:brightness-105"
-                  : "bg-white/[0.06] text-[#8f847a]"
+              disabled={!loading && !canSend}
+              className={`relative flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition ${
+                loading
+                  ? "bg-[linear-gradient(135deg,#f1ddc9,#caa684)] text-[#241a13]"
+                  : canSend
+                    ? "bg-[linear-gradient(135deg,#f5ede5,#d2b497)] text-[#241a13] hover:brightness-105"
+                    : "bg-white/[0.04] text-[#8f847a]"
               }`}
             >
               {loading ? (
-                <Square size={16} className="fill-black" />
+                <Square size={15} className="fill-black" />
               ) : (
                 <ArrowUp size={16} className="stroke-[3]" />
               )}
             </button>
           </div>
+
+          {loading && (
+            <div className="flex items-center justify-between border-t border-white/6 px-4 pb-3 pt-1 text-xs text-[#c8b8aa]">
+              <div className="flex items-center gap-2">
+                <LoaderCircle size={13} className="animate-spin text-[#d8c2a7]" />
+                <span>Generating response...</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#d8c2a7]">
+                <Sparkles size={13} />
+                <span>Press stop to pause output</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

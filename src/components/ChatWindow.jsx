@@ -62,6 +62,21 @@ function inferDataStep(chat) {
   return "upload";
 }
 
+const LANDING_CONTENT = {
+  chat: {
+    eyebrow: "Conversational AI",
+    title: "How can I help you?",
+    subtitle:
+      "Ask quick questions, explore ideas, and get polished answers in a calm focused workspace."
+  },
+  data: {
+    eyebrow: "Autonomous Data Science",
+    title: "Ready to analyze your dataset?",
+    subtitle:
+      "Upload a file, choose a target, refine your columns, and walk through training with guided model insights."
+  }
+};
+
 export default function ChatWindow({ chat, updateMessages, switchMode }) {
   const endRef = useRef(null);
   const [landingAnimationKey, setLandingAnimationKey] = useState(0);
@@ -80,6 +95,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
   if (!chat) return null;
 
   const activeDataStep = inferDataStep(chat);
+  const landingContent = LANDING_CONTENT[chat.mode] || LANDING_CONTENT.chat;
 
   return (
     <div key={chat.id} className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-transparent">
@@ -169,12 +185,17 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
               />
             </button>
 
-            <h1 className="text-4xl font-semibold tracking-[-0.03em] text-white [text-shadow:0_18px_55px_rgba(0,0,0,0.36)]">
-              How can I help you?
-            </h1>
-            <p className="mt-3 max-w-xl text-center text-[15px] leading-7 text-[#a69689]">
-              Ask anything in chat mode, or switch into data science mode for guided dataset analysis and model evaluation.
-            </p>
+            <div className="landing-copy flex flex-col items-center">
+              <div className="landing-eyebrow text-[11px] font-semibold uppercase tracking-[0.24em] text-[#c3ab94]">
+                {landingContent.eyebrow}
+              </div>
+              <h1 className="landing-title mt-4 text-4xl font-semibold tracking-[-0.03em] text-white [text-shadow:0_18px_55px_rgba(0,0,0,0.36)]">
+                {landingContent.title}
+              </h1>
+              <p className="landing-subtitle mt-3 max-w-xl text-center text-[15px] leading-7 text-[#a69689]">
+                {landingContent.subtitle}
+              </p>
+            </div>
           </div>
         </div>
       )}
