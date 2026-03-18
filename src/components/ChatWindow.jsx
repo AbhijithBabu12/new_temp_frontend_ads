@@ -50,7 +50,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
             <h1 className="text-4xl font-semibold tracking-[-0.03em] text-white [text-shadow:0_18px_55px_rgba(0,0,0,0.36)]">
               How can I help you?
             </h1>
-            <p className="mt-3 max-w-xl text-center text-[15px] leading-7 text-[#97a89c]">
+            <p className="mt-3 max-w-xl text-center text-[15px] leading-7 text-[#a69689]">
               Ask anything in chat mode, or switch into data science mode for guided dataset analysis and model evaluation.
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#151816] via-[#151816]/88 to-transparent pt-16">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#171514] via-[#171514]/88 to-transparent pt-16">
         <div className="pointer-events-auto">
           <ChatInput
             chat={chat}

@@ -6,8 +6,8 @@ import logoImage from "../assets/mc_logo.jpeg";
 
 export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, currentChatId }) {
   return (
-    <aside className="relative z-20 flex w-[18rem] shrink-0 flex-col bg-[linear-gradient(180deg,rgba(18,22,20,0.98)_0%,rgba(15,18,16,0.96)_100%)] px-4 py-5 shadow-[18px_0_60px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.08),transparent_30%)]"></div>
+    <aside className="relative z-20 flex w-[18rem] shrink-0 flex-col bg-[linear-gradient(180deg,rgba(22,20,19,0.98)_0%,rgba(17,16,15,0.96)_100%)] px-4 py-5 shadow-[18px_0_60px_rgba(0,0,0,0.24)] backdrop-blur-2xl">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(214,185,142,0.08),transparent_30%)]"></div>
 
       <div className="relative mb-8 flex items-center gap-3">
         <img
@@ -20,19 +20,19 @@ export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, 
 
       <button
         onClick={newChat}
-        className="relative flex items-center gap-3 rounded-2xl border border-white/8 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.025))] px-4 py-3 text-left text-white transition duration-200 hover:bg-white/[0.06]"
+        className="relative flex items-center gap-3 rounded-2xl border border-[#706256]/14 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-3 text-left text-white transition duration-200 hover:bg-white/[0.05]"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(135deg,#ecfdf5,#a7f3d0)] text-[#14532d] shadow-[0_10px_24px_rgba(16,185,129,0.2)]">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4eadf,#d7bda4)] text-[#5b493d] shadow-[0_10px_24px_rgba(145,114,86,0.18)]">
           <Plus size={18} />
         </span>
         <span>
           <span className="block text-sm font-semibold">New Chat</span>
-          <span className="block text-xs text-[#97a39b]">Start a fresh conversation</span>
+          <span className="block text-xs text-[#a19184]">Start a fresh conversation</span>
         </span>
       </button>
 
       <div className="relative mt-8 flex items-center justify-between">
-        <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#7f8d82]">
+        <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#87796d]">
           Recent Chats
         </div>
         <div className="h-px flex-1 bg-white/6 ml-3"></div>
@@ -44,7 +44,7 @@ export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, 
             key={chat.id}
             className={`group flex items-center justify-between rounded-2xl border px-3 py-3 transition ${
               currentChatId === chat.id
-                ? "border-emerald-400/18 bg-[linear-gradient(135deg,rgba(16,185,129,0.12),rgba(255,255,255,0.03))] shadow-[0_10px_30px_rgba(0,0,0,0.16)]"
+                ? "border-[#b89573]/22 bg-[linear-gradient(135deg,rgba(184,149,115,0.14),rgba(255,255,255,0.03))] shadow-[0_10px_30px_rgba(0,0,0,0.16)]"
                 : "border-transparent hover:bg-white/[0.04]"
             }`}
           >
@@ -52,8 +52,8 @@ export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, 
               onClick={() => setCurrentChatId(chat.id)}
               className="min-w-0 flex-1 cursor-pointer"
             >
-              <div className="truncate text-sm font-medium text-[#edf2ee]">{chat.title}</div>
-              <div className="mt-1 truncate text-xs text-[#829086]">
+              <div className="truncate text-sm font-medium text-[#f0ece8]">{chat.title}</div>
+              <div className="mt-1 truncate text-xs text-[#93867a]">
                 {chat.mode === "data" ? "Data Science workspace" : "Conversation"}
               </div>
             </div>
