@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import ChatWindow from "./components/ChatWindow";
+import sidebarImage from "./assets/sidebar.jpeg";
 
 export default function App() {
   const [chats, setChats] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [mode, setMode] = useState("chat");
-  const [sidebarOpen, setSidebarOpen] = useState(true); // ✅ NEW
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // ✅ Create default chat on load
   useEffect(() => {
     const firstChat = {
       id: Date.now().toString(),
@@ -20,20 +20,18 @@ export default function App() {
     setCurrentChatId(firstChat.id);
   }, []);
 
-  // ✅ NEW CHAT
   const newChat = () => {
     const chat = {
       id: Date.now().toString(),
       title: mode === "chat" ? "Chat" : "Data Analysis",
       messages: [],
-      mode: mode
+      mode
     };
 
-    setChats(prev => [chat, ...prev]);
+    setChats((prev) => [chat, ...prev]);
     setCurrentChatId(chat.id);
   };
 
-  // ✅ MODE SWITCH
   const switchMode = (newMode) => {
     const chat = {
       id: Date.now().toString(),
@@ -43,16 +41,14 @@ export default function App() {
     };
 
     setMode(newMode);
-    setChats(prev => [chat, ...prev]);
+    setChats((prev) => [chat, ...prev]);
     setCurrentChatId(chat.id);
   };
 
-  // ✅ DELETE CHAT (NEW)
   const deleteChat = (chatId) => {
-    const filtered = chats.filter(c => c.id !== chatId);
+    const filtered = chats.filter((c) => c.id !== chatId);
 
     if (filtered.length === 0) {
-      // create fresh chat if all deleted
       const newChatObj = {
         id: Date.now().toString(),
         title: "Chat",
@@ -67,10 +63,9 @@ export default function App() {
     }
   };
 
-  // ✅ UPDATE MESSAGES + AUTO TITLE
   const updateMessages = (chatId, messages) => {
-    setChats(prev =>
-      prev.map(c => {
+    setChats((prev) =>
+      prev.map((c) => {
         if (c.id !== chatId) return c;
 
         let title = c.title;
@@ -84,34 +79,35 @@ export default function App() {
     );
   };
 
-  const currentChat = chats.find(c => c.id === currentChatId);
+  const currentChat = chats.find((c) => c.id === currentChatId);
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#212121] text-white relative">
-
-      {/* ✅ SIDEBAR */}
       {sidebarOpen && (
         <Sidebar
           chats={chats}
           newChat={newChat}
           setCurrentChatId={setCurrentChatId}
-          deleteChat={deleteChat} // 🔥 new
+          deleteChat={deleteChat}
         />
       )}
 
-      {/* ✅ TOGGLE BUTTON */}
       <button
-  onClick={() => setSidebarOpen(!sidebarOpen)}
-  className={`
-    fixed top-4 z-50
-    w-10 h-10 rounded-full
-    bg-blue-600 flex items-center justify-center
-    shadow-lg hover:bg-blue-500 transition-all duration-300
-    ${sidebarOpen ? "left-64" : "left-4"}
-  `}
->
-  ☰
-</button>
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className={`
+          fixed top-4 z-50
+          h-11 w-11 overflow-hidden rounded-full
+          shadow-lg transition-all duration-300
+          ${sidebarOpen ? "left-64" : "left-4"}
+        `}
+      >
+        <img
+          src={sidebarImage}
+          alt="Toggle sidebar"
+          className="h-full w-full rounded-full object-cover"
+        />
+      </button>
+
       <ChatWindow
         chat={currentChat}
         updateMessages={updateMessages}
