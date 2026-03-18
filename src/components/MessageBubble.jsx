@@ -1,5 +1,11 @@
 export default function MessageBubble({ message }) {
   const isUser = message.role === "user";
+  const downloadPrompt = "Would you like to download the trained model, report, and plots? (yes/no)";
+  const hasDownloadPrompt =
+    typeof message.content === "string" && message.content.includes(downloadPrompt);
+  const displayContent = hasDownloadPrompt
+    ? message.content.replace(downloadPrompt, "").trim()
+    : message.content;
   const imageFiles = (message.files || []).filter((file) =>
     /\.(png|jpg|jpeg|gif|webp)$/i.test(file)
   );
@@ -21,7 +27,7 @@ export default function MessageBubble({ message }) {
             <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:0.3s]"></span>
           </div>
         ) : (
-          message.content
+          displayContent
         )}
 
         {message.report && (
@@ -61,6 +67,12 @@ export default function MessageBubble({ message }) {
                 Download {file}
               </a>
             ))}
+          </div>
+        )}
+
+        {hasDownloadPrompt && (
+          <div className="mt-4 border-t border-white/10 pt-3 text-sm text-[#ececf1]">
+            {downloadPrompt}
           </div>
         )}
       </div>
