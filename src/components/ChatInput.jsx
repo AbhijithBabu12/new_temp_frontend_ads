@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUp, LoaderCircle, Paperclip, Square, Sparkles, X } from "lucide-react";
+import { ArrowUp, Paperclip, Square, X } from "lucide-react";
 
 export default function ChatInput({ chat, updateMessages, mode }) {
   const [input, setInput] = useState("");
@@ -269,18 +269,6 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             </button>
           </div>
 
-          {loading && (
-            <div className="flex items-center justify-between border-t border-white/6 px-4 pb-3 pt-1 text-xs text-[#c8b8aa]">
-              <div className="flex items-center gap-2">
-                <LoaderCircle size={13} className="animate-spin text-[#d8c2a7]" />
-                <span>Generating response...</span>
-              </div>
-              <div className="flex items-center gap-2 text-[#d8c2a7]">
-                <Sparkles size={13} />
-                <span>Press stop to pause output</span>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
