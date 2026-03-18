@@ -2,7 +2,7 @@
 // Sidebar.jsx
 // =============================
 import { Plus, Trash2 } from "lucide-react";
-import logoImage from "../assets/logo1.png";
+import logoImage from "../assets/mc_logo.jpeg";
 
 export default function Sidebar({ chats, newChat, setCurrentChatId, deleteChat, currentChatId }) {
   return (
