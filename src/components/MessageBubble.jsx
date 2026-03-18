@@ -1,15 +1,18 @@
 export default function MessageBubble({ message }) {
   const isUser = message.role === "user";
   const downloadPrompt = "Would you like to download the trained model, report, and plots? (yes/no)";
+  const promptPattern =
+    /\s*Would you like to download the trained model, report, and plots\? \(yes\/no\)\s*$/;
   const hasDownloadPrompt =
-    typeof message.content === "string" && message.content.includes(downloadPrompt);
-  const displayContent = hasDownloadPrompt
-    ? message.content.replace(downloadPrompt, "").trim()
-    : message.content;
+    typeof message.content === "string" && promptPattern.test(message.content);
+  const displayContent =
+    typeof message.content === "string"
+      ? message.content.replace(promptPattern, "").trim()
+      : message.content;
   const imageFiles = (message.files || []).filter((file) =>
     /\.(png|jpg|jpeg|gif|webp)$/i.test(file)
   );
-  const downloadFiles = (message.files || []).filter((file) => !imageFiles.includes(file));
+  const allFiles = message.files || [];
 
   return (
     <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
@@ -55,9 +58,9 @@ export default function MessageBubble({ message }) {
           </div>
         )}
 
-        {message.files && message.files.length > 0 && (
+        {allFiles.length > 0 && (
           <div className="mt-3 flex flex-col gap-2">
-            {downloadFiles.map((file, i) => (
+            {allFiles.map((file, i) => (
               <a
                 key={i}
                 href={`${import.meta.env.VITE_API_URL}/download/${file}`}
