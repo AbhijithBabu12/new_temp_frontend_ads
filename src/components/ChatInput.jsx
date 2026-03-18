@@ -191,7 +191,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
   return (
     <div className="px-6 pb-6">
       <div className="mx-auto w-full max-w-[900px]">
-        <div className={`border border-[#6f6257]/10 bg-[linear-gradient(180deg,rgba(36,32,30,0.92),rgba(26,24,23,0.9))] shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-200 ${
+        <div className={`border border-[var(--composer-border)] bg-[var(--composer-bg)] shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all duration-200 ${
           selectedFile ? "rounded-[28px]" : "rounded-[999px]"
         }`}>
           <input
@@ -204,16 +204,16 @@ export default function ChatInput({ chat, updateMessages, mode }) {
 
           {selectedFile && (
             <div className="px-4 pt-4">
-              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#7a695a]/18 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-3 py-2 text-sm text-[#e6ddd5] shadow-[0_10px_24px_rgba(0,0,0,0.18)]">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#d7bda4]/18 text-[#dcc0a3]">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--chip-border)] bg-[var(--chip-bg)] px-3 py-2 text-sm text-[var(--chip-text)] shadow-[0_10px_24px_rgba(0,0,0,0.12)]">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--chip-icon-bg)] text-[var(--chip-icon)]">
                   <Paperclip size={13} />
                 </span>
                 <span className="max-w-[220px] truncate font-medium">{selectedFile.name}</span>
-                <span className="text-[11px] uppercase tracking-[0.16em] text-[#ac9c8f]">CSV</span>
+                <span className="text-[11px] uppercase tracking-[0.16em] text-[var(--chip-muted)]">CSV</span>
                 <button
                   type="button"
                   onClick={() => setSelectedFile(null)}
-                  className="rounded-full p-1 text-gray-400 transition hover:bg-white/[0.06] hover:text-white"
+                  className="rounded-full p-1 text-[var(--chip-muted)] transition hover:bg-[var(--chip-hover)] hover:text-[var(--chip-text)]"
                 >
                   <X size={13} />
                 </button>
@@ -225,7 +225,7 @@ export default function ChatInput({ chat, updateMessages, mode }) {
             {mode === "data" && (
               <button
                 onClick={() => fileRef.current.click()}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.04] text-[#cfc4bb] transition hover:bg-white/8 hover:text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--composer-icon-bg)] text-[var(--composer-icon)] transition hover:bg-[var(--composer-icon-hover-bg)] hover:text-[var(--composer-icon-hover)]"
               >
                 <Paperclip size={18} />
               </button>
@@ -246,19 +246,19 @@ export default function ChatInput({ chat, updateMessages, mode }) {
                   ? "Ask about your dataset..."
                   : "Ask anything"
               }
-              className="min-h-[46px] max-h-40 flex-1 bg-transparent px-1 pt-[11px] text-[15px] font-normal leading-6 text-white resize-none overflow-y-auto outline-none placeholder:font-normal placeholder:text-[#aa9f95]"
+              className="min-h-[46px] max-h-40 flex-1 resize-none overflow-y-auto bg-transparent px-1 pt-[11px] text-[15px] font-normal leading-6 text-[var(--composer-text)] outline-none placeholder:font-normal placeholder:text-[var(--composer-placeholder)]"
               rows={1}
             />
 
             <button
               onClick={loading ? stopMessage : sendMessage}
               disabled={!loading && !canSend}
-              className={`relative flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.2)] transition ${
+              className={`relative flex h-11 w-11 items-center justify-center rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.14)] transition ${
                 loading
                   ? "bg-[linear-gradient(135deg,#f1ddc9,#caa684)] text-[#241a13]"
                   : canSend
                     ? "bg-[linear-gradient(135deg,#f5ede5,#d2b497)] text-[#241a13] hover:brightness-105"
-                    : "bg-white/[0.04] text-[#8f847a]"
+                    : "bg-[var(--composer-send-idle-bg)] text-[var(--composer-send-idle-text)]"
               }`}
             >
               {loading ? (

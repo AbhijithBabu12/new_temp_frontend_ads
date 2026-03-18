@@ -26,13 +26,13 @@ function renderStructuredContent(content) {
 
         if (hasHeading && lines.length > 1) {
           return (
-            <div key={index} className="rounded-2xl bg-white/[0.035] px-4 py-3">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#bda792]">
+            <div key={index} className="rounded-2xl bg-[var(--message-card-bg)] px-4 py-3">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--message-accent)]">
                 {titleLine.replace(/:$/, "")}
               </div>
               <div className="mt-3 space-y-2">
                 {lines.slice(1).map((line, lineIndex) => (
-                  <div key={lineIndex} className="text-[#ece6e0]">
+                  <div key={lineIndex} className="text-[var(--assistant-text)]">
                     {line}
                   </div>
                 ))}
@@ -43,9 +43,9 @@ function renderStructuredContent(content) {
 
         if (lines.every((line) => line.startsWith("- "))) {
           return (
-            <div key={index} className="space-y-2 rounded-2xl bg-white/[0.03] px-4 py-3">
+            <div key={index} className="space-y-2 rounded-2xl bg-[var(--message-card-bg)] px-4 py-3">
               {lines.map((line, lineIndex) => (
-                <div key={lineIndex} className="text-[#ece6e0]">
+                <div key={lineIndex} className="text-[var(--assistant-text)]">
                   {line}
                 </div>
               ))}
@@ -54,7 +54,7 @@ function renderStructuredContent(content) {
         }
 
         return (
-          <p key={index} className="text-[#efe8e2]">
+          <p key={index} className="text-[var(--assistant-text)]">
             {section}
           </p>
         );
@@ -91,10 +91,10 @@ export default function MessageBubble({ message }) {
   return (
     <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[min(88%,54rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 ${
+        className={`max-w-[min(88%,54rem)] whitespace-pre-wrap px-5 py-4 text-[15px] leading-7 transition-colors duration-300 ${
           isUser
-            ? "rounded-[24px] rounded-br-md bg-[#34302d] text-white"
-            : "rounded-[26px] rounded-bl-md border border-[#6f6257]/10 bg-[linear-gradient(180deg,rgba(38,35,33,0.98),rgba(31,28,26,0.96))] text-[#eee7e1] shadow-[0_18px_40px_rgba(0,0,0,0.12)]"
+            ? "rounded-[24px] rounded-br-md bg-[var(--user-bubble-bg)] text-[var(--user-bubble-text)]"
+            : "rounded-[26px] rounded-bl-md border border-[var(--assistant-bubble-border)] bg-[var(--assistant-bubble-bg)] text-[var(--assistant-text)] shadow-[0_18px_40px_rgba(0,0,0,0.12)]"
         }`}
       >
         {message.content === "__loading__" ? (
@@ -105,7 +105,7 @@ export default function MessageBubble({ message }) {
           </div>
         ) : isStructuredAssistant ? (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#bca48e]">
+            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--message-accent)]">
               <Sparkles size={13} />
               Analysis
             </div>
@@ -116,12 +116,12 @@ export default function MessageBubble({ message }) {
         )}
 
         {message.report && (
-          <div className="mt-4 rounded-[22px] border border-[#6f6257]/12 bg-black/22 p-4">
-            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#bda792]">
+          <div className="mt-4 rounded-[22px] border border-[var(--assistant-bubble-border)] bg-[var(--report-bg)] p-4">
+            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--message-accent)]">
               <FileText size={13} />
               Report Snapshot
             </div>
-            <pre className="overflow-x-auto text-xs leading-6 text-[#ded4cb]">
+            <pre className="overflow-x-auto text-xs leading-6 text-[var(--report-text)]">
               {message.report}
             </pre>
           </div>
@@ -129,7 +129,7 @@ export default function MessageBubble({ message }) {
 
         {imageFiles.length > 0 && (
           <div className="mt-4">
-            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#bda792]">
+            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--message-accent)]">
               <ImageIcon size={13} />
               Plot Gallery
             </div>
@@ -139,14 +139,14 @@ export default function MessageBubble({ message }) {
                   key={i}
                   href={`${import.meta.env.VITE_API_URL}/download/${file}`}
                   download={file}
-                  className="block overflow-hidden rounded-[20px] border border-[#6f6257]/12 bg-black/20 shadow-[0_14px_28px_rgba(0,0,0,0.14)]"
+                  className="block overflow-hidden rounded-[20px] border border-[var(--assistant-bubble-border)] bg-[var(--plot-card-bg)] shadow-[0_14px_28px_rgba(0,0,0,0.14)]"
                 >
                   <img
                     src={`${import.meta.env.VITE_API_URL}/download/${file}`}
                     alt={file}
                     className="h-auto w-full object-contain"
                   />
-                  <div className="border-t border-white/6 px-3 py-2 text-xs text-[#cdb9a6]">
+                  <div className="border-t border-[var(--plot-card-divider)] px-3 py-2 text-xs text-[var(--message-accent)]">
                     {file.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ")}
                   </div>
                 </a>
@@ -157,7 +157,7 @@ export default function MessageBubble({ message }) {
 
         {allFiles.length > 0 && (
           <div className="mt-4">
-            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#bda792]">
+            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--message-accent)]">
               <Download size={13} />
               Files
             </div>
@@ -167,7 +167,7 @@ export default function MessageBubble({ message }) {
                   key={i}
                   href={`${import.meta.env.VITE_API_URL}/download/${file}`}
                   download={file}
-                  className="inline-flex items-center rounded-full border border-[#6f6257]/16 bg-white/[0.04] px-3 py-1.5 text-xs text-[#dcc0a3] transition hover:bg-white/[0.06]"
+                  className="inline-flex items-center rounded-full border border-[var(--assistant-bubble-border)] bg-[var(--file-pill-bg)] px-3 py-1.5 text-xs text-[var(--message-accent)] transition hover:bg-[var(--file-pill-hover)]"
                 >
                   Download {file}
                 </a>
@@ -177,7 +177,7 @@ export default function MessageBubble({ message }) {
         )}
 
         {hasDownloadPrompt && (
-          <div className="mt-4 border-t border-white/10 pt-3 text-sm text-[#ececf1]">
+          <div className="mt-4 border-t border-[var(--assistant-bubble-border)] pt-3 text-sm text-[var(--assistant-text)]">
             {downloadPrompt}
           </div>
         )}

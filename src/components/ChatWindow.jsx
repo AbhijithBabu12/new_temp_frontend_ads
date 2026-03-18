@@ -77,7 +77,7 @@ const LANDING_CONTENT = {
   }
 };
 
-export default function ChatWindow({ chat, updateMessages, switchMode }) {
+export default function ChatWindow({ chat, updateMessages, switchMode, theme }) {
   const endRef = useRef(null);
   const [landingAnimationKey, setLandingAnimationKey] = useState(0);
   const [workflowOpen, setWorkflowOpen] = useState(false);
@@ -114,7 +114,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
                     : "pointer-events-none max-w-0 translate-x-4 opacity-0"
                 }`}
               >
-                <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[#706256]/12 bg-[linear-gradient(180deg,rgba(34,31,29,0.88),rgba(24,22,21,0.84))] px-2 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.16)] backdrop-blur-xl">
+                <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-[var(--workflow-border)] bg-[var(--workflow-shell)] px-2 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
                   {DATA_STEPS.map((step, index) => {
                     const isActive = step.id === activeDataStep;
                     const isCompleted = DATA_STEPS.findIndex((item) => item.id === activeDataStep) > index;
@@ -126,13 +126,17 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
                           isActive
                             ? "bg-[linear-gradient(135deg,#f3ebe2,#d8c2a7)] text-[#1e1712] shadow-[0_14px_28px_rgba(73,52,34,0.16)]"
                             : isCompleted
-                              ? "bg-white/[0.06] text-[#efe7de]"
-                              : "text-[#9d8f82]"
+                              ? "bg-[var(--workflow-pill-complete)] text-[var(--workflow-pill-complete-text)]"
+                              : "text-[var(--workflow-pill-muted)]"
                         }`}
                       >
                         <div
                           className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold uppercase tracking-[0.16em] ${
-                            isActive ? "bg-black/10" : isCompleted ? "bg-white/[0.08]" : "bg-white/[0.04]"
+                            isActive
+                              ? "bg-black/10"
+                              : isCompleted
+                                ? "bg-[var(--workflow-count-complete)]"
+                                : "bg-[var(--workflow-count-idle)]"
                           }`}
                         >
                           {String(index + 1).padStart(2, "0")}
@@ -147,9 +151,9 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
               <button
                 type="button"
                 onClick={() => setWorkflowOpen((value) => !value)}
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-[#706256]/14 bg-[linear-gradient(180deg,rgba(34,31,29,0.92),rgba(24,22,21,0.88))] px-4 text-[#eadfd5] shadow-[0_16px_32px_rgba(0,0,0,0.16)] transition hover:bg-[linear-gradient(180deg,rgba(40,36,34,0.96),rgba(28,25,23,0.9))]"
+                className="inline-flex h-11 items-center gap-2 rounded-full border border-[var(--workflow-border)] bg-[var(--workflow-shell)] px-4 text-[var(--workflow-text)] shadow-[0_16px_32px_rgba(0,0,0,0.12)] transition hover:bg-[var(--workflow-hover)]"
               >
-                <ChartNoAxesColumnIncreasing size={16} className="text-[#d4b89a]" />
+                <ChartNoAxesColumnIncreasing size={16} className="text-[var(--workflow-accent)]" />
                 <span className="text-xs font-semibold uppercase tracking-[0.16em]">
                   Workflow
                 </span>
@@ -186,13 +190,13 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
             </button>
 
             <div className="landing-copy flex flex-col items-center">
-              <div className="landing-eyebrow text-[11px] font-semibold uppercase tracking-[0.24em] text-[#c3ab94]">
+              <div className="landing-eyebrow text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--landing-eyebrow)]">
                 {landingContent.eyebrow}
               </div>
-              <h1 className="landing-title mt-4 text-4xl font-semibold tracking-[-0.03em] text-white [text-shadow:0_18px_55px_rgba(0,0,0,0.36)]">
+              <h1 className="landing-title mt-4 text-4xl font-semibold tracking-[-0.03em] text-[var(--landing-title)] [text-shadow:0_18px_55px_rgba(0,0,0,0.12)]">
                 {landingContent.title}
               </h1>
-              <p className="landing-subtitle mt-3 max-w-xl text-center text-[15px] leading-7 text-[#a69689]">
+              <p className="landing-subtitle mt-3 max-w-xl text-center text-[15px] leading-7 text-[var(--landing-subtitle)]">
                 {landingContent.subtitle}
               </p>
             </div>
@@ -210,7 +214,7 @@ export default function ChatWindow({ chat, updateMessages, switchMode }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#171514] via-[#171514]/88 to-transparent pt-16">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 pt-16" style={{ background: theme === "light" ? "linear-gradient(to top, rgba(245,241,235,1), rgba(245,241,235,0.88), transparent)" : "linear-gradient(to top, rgba(23,21,20,1), rgba(23,21,20,0.88), transparent)" }}>
         <div className="pointer-events-auto">
           <ChatInput
             chat={chat}

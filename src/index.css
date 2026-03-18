@@ -2,12 +2,162 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --toggle-shell: linear-gradient(180deg, rgba(39, 34, 31, 0.96) 0%, rgba(24, 22, 20, 0.94) 100%);
+  --toggle-border: rgba(112, 98, 86, 0.18);
+  --toggle-text: #d5ccc4;
+  --toggle-muted: #988d84;
+  --toggle-hover: rgba(255, 255, 255, 0.04);
+  --toggle-hover-text: #ffffff;
+  --toggle-icon-bg: rgba(255, 255, 255, 0.06);
+  --toggle-icon-hover-bg: rgba(255, 255, 255, 0.1);
+  --toggle-icon: #b3a89f;
+
+  --sidebar-bg: linear-gradient(180deg, rgba(22, 20, 19, 0.98) 0%, rgba(17, 16, 15, 0.96) 100%);
+  --sidebar-aura: radial-gradient(circle at top left, rgba(214, 185, 142, 0.08), transparent 30%);
+  --sidebar-title: #f3ede8;
+  --sidebar-muted: #9a8c7f;
+  --sidebar-divider: rgba(255, 255, 255, 0.06);
+  --sidebar-hover: rgba(255, 255, 255, 0.04);
+  --sidebar-accent: #b99c7f;
+  --sidebar-pill-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-button-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  --sidebar-button-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-button-border: rgba(112, 98, 86, 0.14);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(210, 180, 151, 0.16), rgba(255, 255, 255, 0.03));
+  --sidebar-active-border: rgba(210, 180, 151, 0.26);
+  --sidebar-dot: #7a6b5e;
+
+  --workflow-shell: linear-gradient(180deg, rgba(34, 31, 29, 0.92), rgba(24, 22, 21, 0.88));
+  --workflow-hover: linear-gradient(180deg, rgba(40, 36, 34, 0.96), rgba(28, 25, 23, 0.9));
+  --workflow-border: rgba(112, 98, 86, 0.14);
+  --workflow-text: #eadfd5;
+  --workflow-accent: #d4b89a;
+  --workflow-pill-complete: rgba(255, 255, 255, 0.06);
+  --workflow-pill-complete-text: #efe7de;
+  --workflow-pill-muted: #9d8f82;
+  --workflow-count-complete: rgba(255, 255, 255, 0.08);
+  --workflow-count-idle: rgba(255, 255, 255, 0.04);
+
+  --landing-eyebrow: #c3ab94;
+  --landing-title: #ffffff;
+  --landing-subtitle: #a69689;
+
+  --composer-bg: linear-gradient(180deg, rgba(36, 32, 30, 0.92), rgba(26, 24, 23, 0.9));
+  --composer-border: rgba(111, 98, 87, 0.1);
+  --composer-text: #ffffff;
+  --composer-placeholder: #aa9f95;
+  --composer-icon-bg: rgba(255, 255, 255, 0.04);
+  --composer-icon-hover-bg: rgba(255, 255, 255, 0.08);
+  --composer-icon: #cfc4bb;
+  --composer-icon-hover: #ffffff;
+  --composer-send-idle-bg: rgba(255, 255, 255, 0.04);
+  --composer-send-idle-text: #8f847a;
+
+  --chip-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  --chip-border: rgba(122, 105, 90, 0.18);
+  --chip-text: #e6ddd5;
+  --chip-icon-bg: rgba(215, 189, 164, 0.18);
+  --chip-icon: #dcc0a3;
+  --chip-muted: #ac9c8f;
+  --chip-hover: rgba(255, 255, 255, 0.06);
+
+  --assistant-bubble-bg: linear-gradient(180deg, rgba(38, 35, 33, 0.98), rgba(31, 28, 26, 0.96));
+  --assistant-bubble-border: rgba(111, 98, 87, 0.1);
+  --assistant-text: #eee7e1;
+  --user-bubble-bg: #34302d;
+  --user-bubble-text: #ffffff;
+  --message-card-bg: rgba(255, 255, 255, 0.035);
+  --message-accent: #bda792;
+  --report-bg: rgba(0, 0, 0, 0.22);
+  --report-text: #ded4cb;
+  --plot-card-bg: rgba(0, 0, 0, 0.2);
+  --plot-card-divider: rgba(255, 255, 255, 0.06);
+  --file-pill-bg: rgba(255, 255, 255, 0.04);
+  --file-pill-hover: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] {
+  --toggle-shell: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 234, 226, 0.96) 100%);
+  --toggle-border: rgba(193, 174, 158, 0.5);
+  --toggle-text: #5f534a;
+  --toggle-muted: #8b7b6f;
+  --toggle-hover: rgba(112, 98, 86, 0.08);
+  --toggle-hover-text: #231a13;
+  --toggle-icon-bg: rgba(112, 98, 86, 0.07);
+  --toggle-icon-hover-bg: rgba(112, 98, 86, 0.12);
+  --toggle-icon: #7a685a;
+
+  --sidebar-bg: linear-gradient(180deg, rgba(255, 252, 248, 0.96) 0%, rgba(241, 233, 224, 0.96) 100%);
+  --sidebar-aura: radial-gradient(circle at top left, rgba(214, 185, 142, 0.2), transparent 34%);
+  --sidebar-title: #2a221c;
+  --sidebar-muted: #7d6f63;
+  --sidebar-divider: rgba(91, 73, 61, 0.1);
+  --sidebar-hover: rgba(112, 98, 86, 0.06);
+  --sidebar-accent: #9f7f63;
+  --sidebar-pill-bg: rgba(112, 98, 86, 0.08);
+  --sidebar-button-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 233, 224, 0.72));
+  --sidebar-button-hover: rgba(112, 98, 86, 0.06);
+  --sidebar-button-border: rgba(195, 176, 159, 0.48);
+  --sidebar-active-bg: linear-gradient(135deg, rgba(210, 180, 151, 0.24), rgba(255, 255, 255, 0.6));
+  --sidebar-active-border: rgba(184, 149, 115, 0.34);
+  --sidebar-dot: #a28d79;
+
+  --workflow-shell: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(243, 235, 226, 0.88));
+  --workflow-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(238, 228, 218, 0.94));
+  --workflow-border: rgba(193, 174, 158, 0.42);
+  --workflow-text: #4f4339;
+  --workflow-accent: #a98769;
+  --workflow-pill-complete: rgba(112, 98, 86, 0.07);
+  --workflow-pill-complete-text: #56483d;
+  --workflow-pill-muted: #8d7d70;
+  --workflow-count-complete: rgba(112, 98, 86, 0.08);
+  --workflow-count-idle: rgba(112, 98, 86, 0.05);
+
+  --landing-eyebrow: #a9896b;
+  --landing-title: #261d17;
+  --landing-subtitle: #7b6e63;
+
+  --composer-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(241, 233, 224, 0.88));
+  --composer-border: rgba(195, 176, 159, 0.42);
+  --composer-text: #241d18;
+  --composer-placeholder: #8e7e73;
+  --composer-icon-bg: rgba(112, 98, 86, 0.07);
+  --composer-icon-hover-bg: rgba(112, 98, 86, 0.12);
+  --composer-icon: #7b695a;
+  --composer-icon-hover: #241d18;
+  --composer-send-idle-bg: rgba(112, 98, 86, 0.07);
+  --composer-send-idle-text: #9a8b7d;
+
+  --chip-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 237, 229, 0.84));
+  --chip-border: rgba(195, 176, 159, 0.44);
+  --chip-text: #342920;
+  --chip-icon-bg: rgba(184, 149, 115, 0.16);
+  --chip-icon: #9c7e64;
+  --chip-muted: #8b7d72;
+  --chip-hover: rgba(112, 98, 86, 0.08);
+
+  --assistant-bubble-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 240, 233, 0.96));
+  --assistant-bubble-border: rgba(195, 176, 159, 0.32);
+  --assistant-text: #302720;
+  --user-bubble-bg: #e5d4c3;
+  --user-bubble-text: #221913;
+  --message-card-bg: rgba(112, 98, 86, 0.05);
+  --message-accent: #9d7d61;
+  --report-bg: rgba(112, 98, 86, 0.05);
+  --report-text: #4a3f37;
+  --plot-card-bg: rgba(255, 255, 255, 0.72);
+  --plot-card-divider: rgba(112, 98, 86, 0.08);
+  --file-pill-bg: rgba(112, 98, 86, 0.05);
+  --file-pill-hover: rgba(112, 98, 86, 0.08);
+}
+
 /* Optional: smooth fonts */
 body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #171514;
-  color: #fff;
+  color: var(--assistant-text);
   overflow: hidden;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
@@ -41,9 +191,9 @@ textarea::-webkit-scrollbar-track {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #5c5148;
+  background: #8d7a6a;
   border-radius: 999px;
-  border: 2px solid #171514;
+  border: 2px solid transparent;
 }
 
 *::-webkit-scrollbar-track {
@@ -52,7 +202,7 @@ textarea::-webkit-scrollbar-track {
 
 ::selection {
   background: rgba(212, 180, 145, 0.26);
-  color: #ffffff;
+  color: var(--assistant-text);
 }
 
 .landing-logo-scene {

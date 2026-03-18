@@ -23,7 +23,7 @@ const MODES = [
 
 export default function ModeToggle({ mode, switchMode }) {
   return (
-    <div className="inline-flex items-center rounded-[28px] border border-[#706256]/18 bg-[linear-gradient(180deg,rgba(39,34,31,0.96)_0%,rgba(24,22,20,0.94)_100%)] p-1.5 shadow-[0_22px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+    <div className="inline-flex items-center rounded-[28px] border border-[var(--toggle-border)] bg-[var(--toggle-shell)] p-1.5 shadow-[0_22px_50px_rgba(0,0,0,0.16)] backdrop-blur-xl transition-colors duration-300">
       {MODES.map(({ id, label, hint, icon: Icon, activeStyle, iconStyle }) => {
         const isActive = mode === id;
 
@@ -32,17 +32,17 @@ export default function ModeToggle({ mode, switchMode }) {
             key={id}
             type="button"
             onClick={() => switchMode(id)}
-              className={`group relative flex min-w-[176px] items-center gap-3 rounded-[22px] px-4 py-3 text-left transition-all duration-300 ${
+            className={`group relative flex min-w-[176px] items-center gap-3 rounded-[22px] px-4 py-3 text-left transition-all duration-300 ${
               isActive
                 ? activeStyle
-                : "text-[#d5ccc4] hover:bg-white/[0.04] hover:text-white"
+                : "text-[var(--toggle-text)] hover:bg-[var(--toggle-hover)] hover:text-[var(--toggle-hover-text)]"
             }`}
           >
             <span
               className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 ${
                 isActive
                   ? iconStyle
-                  : "bg-white/6 text-[#b3a89f] group-hover:bg-white/10 group-hover:text-white"
+                  : "bg-[var(--toggle-icon-bg)] text-[var(--toggle-icon)] group-hover:bg-[var(--toggle-icon-hover-bg)] group-hover:text-[var(--toggle-hover-text)]"
               }`}
             >
               <Icon size={18} />
@@ -54,7 +54,7 @@ export default function ModeToggle({ mode, switchMode }) {
               </span>
               <span
                 className={`block truncate text-[11px] leading-4 ${
-                  isActive ? "text-black/58" : "text-[#988d84]"
+                  isActive ? "text-black/58" : "text-[var(--toggle-muted)]"
                 }`}
               >
                 {hint}
